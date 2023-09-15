@@ -16,5 +16,9 @@ Including another URLconf
 """
 from django.urls import path
 
+from apps.orders.views import OrdersListCreateView, OrderView
+
 urlpatterns = [
+    path('orders', OrdersListCreateView.as_view(), name='list_create_orders'),
+    path('orders/<int:pk>', OrderView.as_view(), name='list_patch_order'),
 ]
