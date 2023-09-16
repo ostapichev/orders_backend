@@ -11,9 +11,9 @@ def order_filtered_queryset(query: QueryDict) -> QuerySet:
     for k, v in query.items():
         match k:
             case 'order_by_id':
-                qs = qs.order_by('-id')
-            case 'order_by_id_desc':
                 qs = qs.order_by('id')
+            case 'order_by_id_desc':
+                qs = qs.order_by('-id')
             case 'course':
                 qs = qs.filter(course__exact=v)
             case 'course_format':

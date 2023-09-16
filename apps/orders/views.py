@@ -1,43 +1,51 @@
+from django.http import Http404
+
 from rest_framework import status
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import GenericAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.mixins import CreateModelMixin, ListModelMixin
 from rest_framework.response import Response
 
 from .filters import order_filtered_queryset
-from .models import OrderModel
-from .serializers import OrderSerializer
+from .models import CommentModel, OrderModel
+from .serializers import CommentSerializer, OrderSerializer
 
 
-class OrdersListCreateView(GenericAPIView):
-    def get(self, *args, **kwargs):
-        qs = order_filtered_queryset(self.request.query_params)
-        serializer = OrderSerializer(qs, many=True)
-        return Response(serializer.data, status.HTTP_200_OK)
-
-    def post(self, *args, **kwargs):
-        data: dict = self.request.data
-        serializer = OrderSerializer(data=data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status.HTTP_201_CREATED)
-
-
-class OrderRetrieveUpdateDestroyView(GenericAPIView):
+class OrdersListCreateView(GenericAPIView, ListModelMixin, CreateModelMixin):
     serializer_class = OrderSerializer
     queryset = OrderModel.objects.all()
 
+    def get_queryset(self):
+        return order_filtered_queryset(self.request.query_params)
+
+    def get(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
+
+
+class OrderRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
+    serializer_class = OrderSerializer
+    queryset = OrderModel.objects.all()
+
+
+class CommentListCreateView(GenericAPIView, ListModelMixin, CreateModelMixin):
+    queryset = OrderModel.objects.all()
+
     def get(self, *args, **kwargs):
-        order = self.get_object()
-        serializer = self.get_serializer(order)
+        pk = kwargs['pk']
+        if not OrderModel.objects.filter(pk=pk).exists():
+            raise Http404()
+        comments = CommentModel.objects.filter(order_id=pk)
+        serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data, status.HTTP_200_OK)
 
-    def patch(self, *args, **kwargs):
-        data: dict = self.request.data
-        order = self.get_object()
-        serializer = OrderSerializer(order, data, partial=True)
+    def post(self, *args, **kwargs):
+        pk = kwargs['pk']
+        data = self.request.data
+        serializer = CommentSerializer(data=data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status.HTTP_200_OK)
-
-    def delete(self, *args, **kwargs):
-        self.get_object().delete()
-        return Response('Deleted', status.HTTP_204_NO_CONTENT)
+        if not OrderModel.objects.filter(pk=pk).exists():
+            raise Http404()
+        serializer.save(order_id=pk)
+        return Response(serializer.data, status.HTTP_201_CREATED)

@@ -22,4 +22,9 @@ class OrderModel(BaseModel):
         db_table = 'orders'
 
 
+class CommentModel(BaseModel):
+    comment = models.TextField()
+    order = models.ForeignKey(OrderModel, on_delete=models.CASCADE, related_name='comments')
 
+    class Meta:
+        db_table = 'comments'
