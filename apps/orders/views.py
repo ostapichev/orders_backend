@@ -4,15 +4,15 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from .filters import order_filtered_queryset
 from .models import OrderModel
 from .serializers import OrderSerializer
 
 
 class OrdersListCreateView(APIView):
-
     def get(self, *args, **kwargs):
-        orders = OrderModel.objects.all()
-        serializer = OrderSerializer(orders, many=True)
+        qs = order_filtered_queryset(self.request.query_params)
+        serializer = OrderSerializer(qs, many=True)
         return Response(serializer.data, status.HTTP_200_OK)
 
     def post(self, *args, **kwargs):
