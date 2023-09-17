@@ -48,3 +48,8 @@ class CommentListCreateView(GenericAPIView):
             raise Http404()
         serializer.save(order_id=pk)
         return Response(serializer.data, status.HTTP_201_CREATED)
+
+
+class CommentUpdateDestroyView(RetrieveUpdateDestroyAPIView):
+    serializer_class = CommentSerializer
+    queryset = CommentModel.objects.all()
