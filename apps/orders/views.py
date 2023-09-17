@@ -12,7 +12,7 @@ from .serializers import CommentSerializer, OrderSerializer
 
 class OrdersListCreateView(GenericAPIView, ListModelMixin, CreateModelMixin):
     serializer_class = OrderSerializer
-    queryset = OrderModel.objects.all()
+    queryset = OrderModel.objects.prefetch_related('comments')
 
     def get_queryset(self):
         return order_filtered_queryset(self.request.query_params)

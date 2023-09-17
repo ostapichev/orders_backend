@@ -20,6 +20,7 @@ class OrderModel(BaseModel):
 
     class Meta:
         db_table = 'orders'
+        ordering = ('id',)
 
 
 class CommentModel(BaseModel):
