@@ -29,7 +29,7 @@ class OrderRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = OrderModel.objects.all()
 
 
-class CommentListCreateView(GenericAPIView, ListModelMixin, CreateModelMixin):
+class CommentListCreateView(GenericAPIView):
     queryset = OrderModel.objects.all()
 
     def get(self, *args, **kwargs):
@@ -42,8 +42,7 @@ class CommentListCreateView(GenericAPIView, ListModelMixin, CreateModelMixin):
 
     def post(self, *args, **kwargs):
         pk = kwargs['pk']
-        data = self.request.data
-        serializer = CommentSerializer(data=data)
+        serializer = CommentSerializer(data=self.request.data)
         serializer.is_valid(raise_exception=True)
         if not OrderModel.objects.filter(pk=pk).exists():
             raise Http404()

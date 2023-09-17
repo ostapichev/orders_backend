@@ -8,6 +8,9 @@ from .models import OrderModel
 
 def order_filtered_queryset(query: QueryDict) -> QuerySet:
     qs = OrderModel.objects.all()
+    query = query.dict()
+    query.pop('page', None)
+    query.pop('size', None)
     for k, v in query.items():
         match k:
             case 'order_by_id':
