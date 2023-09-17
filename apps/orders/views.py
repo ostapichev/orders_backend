@@ -5,7 +5,7 @@ from rest_framework.generics import GenericAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
 from rest_framework.response import Response
 
-from .filters import order_filtered_queryset
+from .filters import OrderFilter
 from .models import CommentModel, OrderModel
 from .serializers import CommentSerializer, OrderSerializer
 
@@ -13,9 +13,7 @@ from .serializers import CommentSerializer, OrderSerializer
 class OrdersListCreateView(GenericAPIView, ListModelMixin, CreateModelMixin):
     serializer_class = OrderSerializer
     queryset = OrderModel.objects.prefetch_related('comments')
-
-    def get_queryset(self):
-        return order_filtered_queryset(self.request.query_params)
+    filterset_class = OrderFilter
 
     def get(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)

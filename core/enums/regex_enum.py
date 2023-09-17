@@ -1,0 +1,16 @@
+from enum import Enum
+
+
+class RegExEnum(Enum):
+    NAME = (
+        r'^[a-zа-яёіA-ZА-ЯЇЁ]+$',
+        'First letter uppercase min 2 max 35 ch'
+    )
+    PHONE = (
+        r'^\d{12}$',
+        'Phone number must be 12 digits'
+    )
+
+    def __init__(self, pattern: str, msg: str | list[str]):
+        self.pattern = pattern
+        self.msg = msg

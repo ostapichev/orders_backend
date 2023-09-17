@@ -1,36 +1,36 @@
-from django.db.models import QuerySet
-from django.http import QueryDict
+from django_filters import rest_framework as filters
 
-from rest_framework.exceptions import ValidationError
-
-from .models import OrderModel
+from apps.orders.choices import CourseChoices, CourseFormatChoices, CourseTypeChoices, StatusChoices
 
 
-def order_filtered_queryset(query: QueryDict) -> QuerySet:
-    qs = OrderModel.objects.all()
-    query = query.dict()
-    query.pop('page', None)
-    query.pop('size', None)
-    for k, v in query.items():
-        match k:
-            case 'order_by_id':
-                qs = qs.order_by('id')
-            case 'order_by_id_desc':
-                qs = qs.order_by('-id')
-            case 'course':
-                qs = qs.filter(course__exact=v)
-            case 'course_format':
-                qs = qs.filter(course_format__exact=v)
-            case 'course_type':
-                qs = qs.filter(course_type__exact=v)
-            case 'status':
-                qs = qs.filter(status__exact=v)
-            case 'name':
-                qs = qs.filter(name__icontains=v)
-            case 'surname':
-                qs = qs.filter(surname__icontains=v)
-            case 'age':
-                qs = qs.filter(age__exact=v)
-            case _:
-                raise ValidationError({'default': f'"{k}" not allowed here'})
-    return qs
+class OrderFilter(filters.FilterSet):
+    name_contains = filters.CharFilter('name', 'icontains')
+    surname_contains = filters.CharFilter('surname', 'icontains')
+    email_contains = filters.CharFilter('email', 'icontains')
+    phone_contains = filters.NumberFilter('phone', 'icontains')
+    age_in = filters.BaseInFilter('age')
+    course = filters.ChoiceFilter('course', choices=CourseChoices.choices)
+    course_format = filters.ChoiceFilter('course_format', choices=CourseFormatChoices.choices)
+    course_type = filters.ChoiceFilter('course_type', choices=CourseTypeChoices.choices)
+    status = filters.ChoiceFilter('status', choices=StatusChoices.choices)
+    order_by = filters.OrderingFilter(
+        fields=(
+            'id',
+            'name',
+            'surname',
+            'email',
+            'phone',
+            'age',
+            'course',
+            'course_format',
+            'course_type',
+            'status',
+            'sum',
+            'already_paid',
+            'created_at',
+            'updated_at',
+        )
+    )
+
+
+
