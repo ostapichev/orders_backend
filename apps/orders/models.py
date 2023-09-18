@@ -20,16 +20,24 @@ class OrderModel(BaseModel):
         validators.RegexValidator(RegExEnum.PHONE.pattern, RegExEnum.PHONE.msg)
     ])
     age = models.IntegerField(validators=[
-        validators.MinValueValidator(10),
-        validators.MaxValueValidator(70)
+        validators.MinValueValidator(16),
+        validators.MaxValueValidator(90)
     ])
-    course = models.CharField(max_length=4, choices=CourseChoices.choices)
-    course_format = models.CharField(max_length=6, choices=CourseFormatChoices.choices)
-    course_type = models.CharField(max_length=9, choices=CourseTypeChoices.choices)
-    already_paid = models.IntegerField()
-    sum = models.IntegerField()
-    status = models.CharField(max_length=10, choices=StatusChoices.choices)
-    group = models.ForeignKey(GroupModel, on_delete=models.PROTECT, related_name='orders')
+    course = models.CharField(max_length=11, choices=CourseChoices.choices, default='all_courses')
+    course_format = models.CharField(max_length=11, choices=CourseFormatChoices.choices, default='all_formats')
+    course_type = models.CharField(max_length=9, choices=CourseTypeChoices.choices, default='all_types')
+    already_paid = models.IntegerField(validators=[
+        validators.MinValueValidator(1),
+        validators.MaxValueValidator(2147483647)
+    ])
+    sum = models.IntegerField(validators=[
+        validators.MinValueValidator(1),
+        validators.MaxValueValidator(2147483647)
+    ])
+    utm = models.CharField(max_length=20, blank=True)
+    msg = models.CharField(max_length=20, blank=True)
+    status = models.CharField(max_length=12, choices=StatusChoices.choices, default='all_statuses')
+    group = models.ForeignKey(GroupModel, on_delete=models.PROTECT, related_name='orders', default='all_groups')
 
     class Meta:
         db_table = 'orders'
