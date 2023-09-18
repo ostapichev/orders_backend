@@ -10,16 +10,13 @@ from .models import CommentModel, OrderModel
 from .serializers import CommentSerializer, OrderSerializer
 
 
-class OrdersListCreateView(GenericAPIView, ListModelMixin, CreateModelMixin):
+class OrdersListView(GenericAPIView, ListModelMixin):
     serializer_class = OrderSerializer
     queryset = OrderModel.objects.prefetch_related('comments')
     filterset_class = OrderFilter
 
     def get(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        return super().create(request, *args, **kwargs)
 
 
 class OrderRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):

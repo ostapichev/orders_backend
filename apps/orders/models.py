@@ -4,6 +4,7 @@ from django.db import models
 from core.enums import RegExEnum
 from core.models import BaseModel
 
+from apps.groups.models import GroupModel
 from apps.orders.choices import CourseChoices, CourseFormatChoices, CourseTypeChoices, StatusChoices
 
 
@@ -27,9 +28,8 @@ class OrderModel(BaseModel):
     course_type = models.CharField(max_length=9, choices=CourseTypeChoices.choices)
     already_paid = models.IntegerField()
     sum = models.IntegerField()
-    msg = models.TextField(max_length=255)
     status = models.CharField(max_length=10, choices=StatusChoices.choices)
-    utm = models.CharField(max_length=35)
+    group = models.ForeignKey(GroupModel, on_delete=models.PROTECT, related_name='orders')
 
     class Meta:
         db_table = 'orders'
