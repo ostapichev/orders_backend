@@ -6,7 +6,7 @@ from .models import CommentModel, OrderModel
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = CommentModel
-        fields = ('id', 'comment')
+        fields = ('id', 'comment', 'created_at',)
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -28,10 +28,6 @@ class OrderSerializer(serializers.ModelSerializer):
             'sum',
             'already_paid',
             'created_at',
-            'updated_at',
             'comments',
             'group_id',
         )
-
-
-
