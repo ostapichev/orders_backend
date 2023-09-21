@@ -22,11 +22,6 @@ class GroupsListCreateView(GenericAPIView, CreateModelMixin, ListModelMixin):
         return super().create(request, *args, **kwargs)
 
 
-class GroupUpdateDestroyView(RetrieveUpdateDestroyAPIView):
-    serializer_class = GroupSerializer
-    queryset = GroupModel.objects.all()
-
-
 class GroupOrderListCreateView(GenericAPIView):
     queryset = GroupModel.objects.all()
 

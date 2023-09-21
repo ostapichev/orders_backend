@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     # my apps
     'core',
+    'apps.users',
     'apps.orders',
     'apps.groups',
 ]
@@ -50,6 +51,9 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'configs.urls'
+
+# Auth User
+AUTH_USER_MODEL = "users.UserModel"
 
 TEMPLATES = [
     {

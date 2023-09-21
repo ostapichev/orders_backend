@@ -19,7 +19,7 @@ class OrdersListView(GenericAPIView, ListModelMixin):
         return super().list(request, *args, **kwargs)
 
 
-class OrderRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
+class OrderRetrieveUpdateView(RetrieveUpdateDestroyAPIView):
     serializer_class = OrderSerializer
     queryset = OrderModel.objects.all()
 
@@ -43,8 +43,3 @@ class CommentListCreateView(GenericAPIView):
             raise Http404()
         serializer.save(order_id=pk)
         return Response(serializer.data, status.HTTP_201_CREATED)
-
-
-class CommentUpdateDestroyView(RetrieveUpdateDestroyAPIView):
-    serializer_class = CommentSerializer
-    queryset = CommentModel.objects.all()
