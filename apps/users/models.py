@@ -16,7 +16,6 @@ class ProfileModel(BaseModel):
 
 class UserModel(AbstractBaseUser, PermissionsMixin, BaseModel):
     email = models.EmailField(unique=True)
-    password = models.CharField(max_length=128)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=True)
     profile = models.OneToOneField(ProfileModel, on_delete=models.CASCADE, related_name='user')
@@ -25,6 +24,7 @@ class UserModel(AbstractBaseUser, PermissionsMixin, BaseModel):
 
     class Meta:
         db_table = 'auth_user'
+        ordering = ('id',)
 
 
 
