@@ -1,17 +1,9 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 
-from core.models import BaseModel
+from core.models import BaseModel, ProfileModel
 
-from .managers import UserManager
-
-
-class ProfileModel(BaseModel):
-    name = models.CharField(max_length=50)
-    surname = models.CharField(max_length=50)
-
-    class Meta:
-        db_table = 'profile'
+from apps.users.managers import UserManager
 
 
 class UserModel(AbstractBaseUser, PermissionsMixin, BaseModel):
@@ -25,6 +17,3 @@ class UserModel(AbstractBaseUser, PermissionsMixin, BaseModel):
     class Meta:
         db_table = 'auth_user'
         ordering = ('id',)
-
-
-
