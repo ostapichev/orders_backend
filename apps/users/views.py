@@ -10,4 +10,4 @@ UserModel: User = get_user_model()
 
 class UserListCreate(ListCreateAPIView):
     serializer_class = UserSerializer
-    queryset = UserModel.objects.all()
+    queryset = UserModel.objects.all_with_profiles()

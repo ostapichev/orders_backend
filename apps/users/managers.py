@@ -9,20 +9,16 @@ class UserManager(BaseUserManager):
     def create_user(self, email, **kwargs):
         if not email:
             raise ValueError('The email must be set')
+        email = self.normalize_email(email)
+        user = self.model(email=email, **kwargs)
         try:
             if kwargs['is_superuser']:
                 profile_data = {"name": "admin", "surname": "super"}
                 profile = ProfileModel(**profile_data)
                 profile.save()
-                email = self.normalize_email(email)
-                user = self.model(email=email, **kwargs)
                 user.profile = profile
-                user.save()
-                return user
         except KeyError:
             pass
-        email = self.normalize_email(email)
-        user = self.model(email=email, **kwargs)
         user.save()
         return user
 
@@ -34,4 +30,7 @@ class UserManager(BaseUserManager):
             raise ValueError('Superuser must be have is_superuser')
         user = self.create_user(email, **kwargs)
         return user
+
+    def all_with_profiles(self):
+        return self.select_related('profile')
 
