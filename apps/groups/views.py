@@ -1,8 +1,9 @@
 from django.http import Http404
 
 from rest_framework import status
-from rest_framework.generics import GenericAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import GenericAPIView
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
+from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
 from ..orders.models import OrderModel
@@ -14,6 +15,7 @@ from .serializers import GroupSerializer
 class GroupsListCreateView(GenericAPIView, CreateModelMixin, ListModelMixin):
     serializer_class = GroupSerializer
     queryset = GroupModel.objects.all()
+    permission_classes = (IsAdminUser,)
 
     def get(self, request,  *args, **kwargs):
         return super().list(request, *args, **kwargs)
@@ -24,6 +26,7 @@ class GroupsListCreateView(GenericAPIView, CreateModelMixin, ListModelMixin):
 
 class GroupOrderListCreateView(GenericAPIView):
     queryset = GroupModel.objects.all()
+    permission_classes = (IsAdminUser,)
 
     def get(self, *args, **kwargs):
         pk = kwargs['pk']

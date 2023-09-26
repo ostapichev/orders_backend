@@ -6,6 +6,17 @@ class RegExEnum(Enum):
         r'^[a-zа-яёіA-ZА-ЯЇЁ]+$',
         'First letter uppercase min 2 max 35 ch'
     )
+    PASSWORD = (
+        r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=(?:.*[`~!@#$%^&*()\-_+=\\\|\'\"\;\:\/?.>,<\[\]\{\}]){2,'
+        r'})[a-zA-Z\d`~!@#$%^&*()\-_+=\\\|\'\"\;\:\/?.>,<\[\]\{\}]{8,30}$',
+        [
+            'min 1 lowercase ch',
+            'min 1 uppercase ch',
+            'min 1 digit',
+            'min 1 special character',
+            'length 8-30'
+        ]
+    )
     PHONE = (
         r'^\d{12}$',
         'Phone number must be 12 digits'

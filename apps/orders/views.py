@@ -2,7 +2,8 @@ from django.http import Http404
 
 from rest_framework import status
 from rest_framework.generics import GenericAPIView, RetrieveUpdateDestroyAPIView
-from rest_framework.mixins import CreateModelMixin, ListModelMixin
+from rest_framework.mixins import ListModelMixin
+from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
 from .filters import OrderFilter
@@ -14,6 +15,7 @@ class OrdersListView(GenericAPIView, ListModelMixin):
     serializer_class = OrderSerializer
     queryset = OrderModel.objects.prefetch_related('comments')
     filterset_class = OrderFilter
+    permission_classes = (IsAdminUser,)
 
     def get(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
@@ -22,10 +24,12 @@ class OrdersListView(GenericAPIView, ListModelMixin):
 class OrderRetrieveUpdateView(RetrieveUpdateDestroyAPIView):
     serializer_class = OrderSerializer
     queryset = OrderModel.objects.all()
+    permission_classes = (IsAdminUser,)
 
 
 class CommentListCreateView(GenericAPIView):
     queryset = OrderModel.objects.all()
+    permission_classes = (IsAdminUser,)
 
     def get(self, *args, **kwargs):
         pk = kwargs['pk']
