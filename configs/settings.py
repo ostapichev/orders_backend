@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     # my apps
     'core',
+    'apps.admin',
     'apps.auth',
     'apps.users',
     'apps.orders',

@@ -5,4 +5,5 @@ urlpatterns = [
     path('orders', include('apps.orders.urls')),
     path('groups', include('apps.groups.urls')),
     path('users', include('apps.users.urls')),
+    path('admin', include('apps.admin.urls')),
 ]
