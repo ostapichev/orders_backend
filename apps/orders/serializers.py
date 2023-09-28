@@ -28,7 +28,9 @@ class OrderSerializer(serializers.ModelSerializer):
             'sum',
             'already_paid',
             'created_at',
-            'comments',
             'group_id',
             'manager_id',
+            'msg',
+            'utm',
+            'comments',
         )

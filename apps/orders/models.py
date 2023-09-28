@@ -39,8 +39,8 @@ class OrderModel(BaseModel):
             validators.MinValueValidator(1),
             validators.MaxValueValidator(2147483647)
         ])
-    utm = models.CharField(max_length=20, blank=True)
-    msg = models.CharField(max_length=20, blank=True)
+    utm = models.CharField(max_length=20, null=True)
+    msg = models.CharField(max_length=20, null=True)
     status = models.CharField(max_length=12, choices=StatusChoices.choices, default=StatusChoices.new)
     group = models.ForeignKey(GroupModel, on_delete=models.PROTECT, related_name='orders', default='all_groups')
     manager = models.ForeignKey(ProfileModel, on_delete=models.PROTECT, related_name='order', null=True)
