@@ -20,5 +20,3 @@ class UserListView(ListAPIView):
 
     def get_queryset(self):
         return super().get_queryset().exclude(pk=self.request.user.pk)
-
-

@@ -3,6 +3,8 @@ from django.db import transaction
 
 from rest_framework import serializers
 
+from core.services.email_service import EmailService
+
 from .models import ProfileModel
 from .models import UserModel as User
 
@@ -23,6 +25,7 @@ class UserSerializer(serializers.ModelSerializer):
         profile_data = validated_data.pop('profile')
         profile = ProfileModel.objects.create(**profile_data)
         user = UserModel.objects.create_user(profile=profile, **validated_data)
+        EmailService.register_email(user)
         return user
 
     class Meta:
