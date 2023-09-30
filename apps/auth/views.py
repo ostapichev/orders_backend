@@ -27,16 +27,20 @@ class ActivateUserRequestView(GenericAPIView):
         serializer.is_valid(raise_exception=True)
         user = get_object_or_404(UserModel, **serializer.data)
         EmailService.register_email(user)
-        return Response('Check email of manager for registration', status.HTTP_200_OK)
+        return Response('Check email of the manager for the registration', status.HTTP_200_OK)
 
 
 class ActivateUserView(GenericAPIView):
     permission_classes = (AllowAny,)
+    serializer_class = PasswordSerializer
 
     def post(self, *args, **kwargs):
         token = kwargs['token']
+        serializer = self.get_serializer(data=self.request.data)
+        serializer.is_valid(raise_exception=True)
         user: User = JWTService.validate_token(token, ActivateToken)
         user.is_active = True
+        user.set_password(serializer.data['password'])
         user.save()
         serializer = UserSerializer(user)
         return Response(serializer.data)
@@ -52,7 +56,7 @@ class RecoveryPasswordRequestView(GenericAPIView):
         serializer.is_valid(raise_exception=True)
         user = get_object_or_404(UserModel, **serializer.data)
         EmailService.recovery_email(user)
-        return Response('Check you email', status.HTTP_200_OK)
+        return Response('Check email of the manager for the recovery password', status.HTTP_200_OK)
 
 
 class RecoveryPasswordView(GenericAPIView):

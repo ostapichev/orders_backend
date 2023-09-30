@@ -16,16 +16,21 @@ class EmailService:
         message.attach_alternative(content, 'text/html')
         message.send()
 
+    @staticmethod
+    def __create_context(user, token_class, link):
+        token = JWTService.create_token(user, token_class)
+        url = f'http://localhost:3000/{link}/{token}'
+        return {
+            'name': user.profile.name,
+            'url': url,
+        }
+
     @classmethod
     def register_email(cls, user: UserDataClass):
-        token = JWTService.create_token(user, ActivateToken)
-        url = f'http://localhost:3000/activate/{token}'
-        context = {'name': user.profile.name, 'url': url}
+        context = cls.__create_context(user, ActivateToken, 'activate')
         cls.__send_email(user.email, 'register.html', context, 'Register')
 
     @classmethod
     def recovery_email(cls, user: UserDataClass):
-        token = JWTService.create_token(user, RecoveryToken)
-        url = f'http://localhost:3000/recovery/{token}'
-        context = {'name': user.profile.name, 'url': url}
+        context = cls.__create_context(user, RecoveryToken, 'recovery')
         cls.__send_email(user.email, 'recovery_password.html', context, 'Recovery password')
