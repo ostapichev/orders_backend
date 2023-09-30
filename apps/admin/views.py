@@ -5,7 +5,6 @@ from rest_framework.generics import CreateAPIView, GenericAPIView
 from rest_framework.response import Response
 
 from core.permission.is_superuser import IsSuperUser
-from core.services.email_service import EmailService
 
 from apps.users.models import UserModel as User
 from apps.users.serializers import UserSerializer
@@ -49,11 +48,3 @@ class UserUnBanView(GenericAPIView):
 
     def get_queryset(self):
         return super().get_queryset().exclude(pk=self.request.user.pk)
-
-
-class TestEmail(GenericAPIView):
-    permission_classes = (IsSuperUser,)
-
-    def get(self, *args, **kwargs):
-        EmailService.test_email()
-        return Response('ok')
