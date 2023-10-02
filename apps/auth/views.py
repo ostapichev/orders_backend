@@ -12,6 +12,8 @@ from core.services.jwt_service import ActivateToken, JWTService, RecoveryToken
 from apps.users.models import UserModel as User
 from apps.users.serializers import UserSerializer
 
+from ..orders.models import OrderModel
+from ..orders.serializers import OrderSerializer
 from .serializers import EmailSerializer, PasswordSerializer
 
 UserModel: User = get_user_model()

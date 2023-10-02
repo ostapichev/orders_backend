@@ -1,6 +1,6 @@
 from django_filters import rest_framework as filters
 
-from apps.orders.choices import CourseChoices, CourseFormatChoices, CourseTypeChoices, StatusChoices
+from .choices import CourseChoices, CourseFormatChoices, CourseTypeChoices, StatusChoices
 
 
 class OrderFilter(filters.FilterSet):
@@ -13,6 +13,8 @@ class OrderFilter(filters.FilterSet):
     course_format = filters.ChoiceFilter('course_format', choices=CourseFormatChoices.choices)
     course_type = filters.ChoiceFilter('course_type', choices=CourseTypeChoices.choices)
     status = filters.ChoiceFilter('status', choices=StatusChoices.choices)
+    group = filters.CharFilter('group__name', 'icontains')
+    manager = filters.CharFilter('manager__name', 'icontains')
     order_by = filters.OrderingFilter(
         fields=(
             'id',
@@ -29,8 +31,12 @@ class OrderFilter(filters.FilterSet):
             'already_paid',
             'created_at',
             'updated_at',
+            'group',
+            'manager',
         )
     )
+
+    
 
 
 

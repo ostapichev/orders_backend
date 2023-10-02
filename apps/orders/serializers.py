@@ -1,16 +1,22 @@
 from rest_framework import serializers
 
+from ..groups.serializers import GroupSerializer
+from ..users.serializers import ProfileSerializer
 from .models import CommentModel, OrderModel
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    profile = ProfileSerializer(read_only=True)
+
     class Meta:
         model = CommentModel
-        fields = ('id', 'comment', 'created_at', 'profile_id')
+        fields = ('id', 'comment', 'created_at', 'profile')
 
 
 class OrderSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
+    group = GroupSerializer(read_only=True)
+    manager = ProfileSerializer(read_only=True)
 
     class Meta:
         model = OrderModel
@@ -28,8 +34,8 @@ class OrderSerializer(serializers.ModelSerializer):
             'sum',
             'already_paid',
             'created_at',
-            'group_id',
-            'manager_id',
+            'group',
+            'manager',
             'msg',
             'utm',
             'comments',

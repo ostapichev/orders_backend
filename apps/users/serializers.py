@@ -3,8 +3,6 @@ from django.db import transaction
 
 from rest_framework import serializers
 
-from core.services.email_service import EmailService
-
 from .models import ProfileModel
 from .models import UserModel as User
 
