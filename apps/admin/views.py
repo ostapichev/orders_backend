@@ -4,6 +4,8 @@ from rest_framework import status
 from rest_framework.generics import CreateAPIView, GenericAPIView
 from rest_framework.response import Response
 
+from drf_yasg.utils import no_body, swagger_auto_schema
+
 from core.permission.is_superuser import IsSuperUser
 
 from apps.users.models import UserModel as User
@@ -13,15 +15,23 @@ UserModel: User = get_user_model()
 
 
 class UserCreateView(CreateAPIView):
+    """
+        Create user
+    """
     serializer_class = UserSerializer
     queryset = UserModel.objects.all_with_profiles()
     permission_classes = (IsSuperUser,)
 
 
 class UserBanView(GenericAPIView):
-    permission_classes = (IsSuperUser,)
+    """
+        Block user by id
+    """
+    serializer_class = UserSerializer
     queryset = UserModel.objects.all()
+    permission_classes = (IsSuperUser,)
 
+    @swagger_auto_schema(request_body=no_body)
     def patch(self, *args, **kwargs):
         user: User = self.get_object()
         if user.is_active:
@@ -35,9 +45,14 @@ class UserBanView(GenericAPIView):
 
 
 class UserUnBanView(GenericAPIView):
-    permission_classes = (IsSuperUser,)
+    """
+        Unblock user by id.
+    """
+    serializer_class = UserSerializer
     queryset = UserModel.objects.all()
+    permission_classes = (IsSuperUser,)
 
+    @swagger_auto_schema(request_body=no_body)
     def patch(self, *args, **kwargs):
         user: User = self.get_object()
         if not user.is_active:
