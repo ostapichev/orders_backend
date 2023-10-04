@@ -13,56 +13,67 @@
 				{
 					"name": "list_orders",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8000/orders",
+							"raw": "localhost:8000/api/orders",
 							"host": [
 								"localhost"
 							],
 							"port": "8000",
 							"path": [
+								"api",
 								"orders"
 							],
 							"query": [
 								{
 									"key": "name_contains",
-									"value": "",
+									"value": "max",
 									"disabled": true
 								},
 								{
 									"key": "surname_contains",
-									"value": "",
+									"value": "bor",
 									"disabled": true
 								},
 								{
 									"key": "email_contains",
-									"value": "",
+									"value": "st",
 									"disabled": true
 								},
 								{
 									"key": "phone_contains",
-									"value": "",
+									"value": "38098",
 									"disabled": true
 								},
 								{
 									"key": "age_in",
-									"value": "",
+									"value": "48",
 									"disabled": true
 								},
 								{
-									"key": "course_in",
-									"value": "",
+									"key": "course",
+									"value": "JCX",
 									"disabled": true
 								},
 								{
-									"key": "course_format_in",
-									"value": "",
+									"key": "course_format",
+									"value": "online",
 									"disabled": true
 								},
 								{
-									"key": "course_type_in",
-									"value": "25",
+									"key": "course_type",
+									"value": "vip",
 									"disabled": true
 								},
 								{
@@ -71,13 +82,13 @@
 									"disabled": true
 								},
 								{
-									"key": "",
-									"value": "",
+									"key": "manager",
+									"value": "admin",
 									"disabled": true
 								},
 								{
 									"key": "order_by",
-									"value": "created_at",
+									"value": "-created_at",
 									"disabled": true
 								}
 							]
@@ -88,49 +99,26 @@
 				{
 					"name": "get_order_id",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8000/orders/:id",
+							"raw": "localhost:8000/api/orders/:id",
 							"host": [
 								"localhost"
 							],
 							"port": "8000",
 							"path": [
-								"orders",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "66"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "patch_order_id",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n     \"age\": 35\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "localhost:8000/orders/:id",
-							"host": [
-								"localhost"
-							],
-							"port": "8000",
-							"path": [
+								"api",
 								"orders",
 								":id"
 							],
@@ -138,31 +126,6 @@
 								{
 									"key": "id",
 									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "destroy_order_id",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "localhost:8000/orders/:id",
-							"host": [
-								"localhost"
-							],
-							"port": "8000",
-							"path": [
-								"orders",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": ""
 								}
 							]
 						}
@@ -172,11 +135,21 @@
 				{
 					"name": "create_comment",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"comment\": \"hello Max\"\r\n}",
+							"raw": "{\r\n    \"comment\": \"Hi!\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -184,12 +157,13 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8000/orders/:id/comments",
+							"raw": "localhost:8000/api/orders/:id/comments",
 							"host": [
 								"localhost"
 							],
 							"port": "8000",
 							"path": [
+								"api",
 								"orders",
 								":id",
 								"comments"
@@ -197,7 +171,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "1"
+									"value": "2"
 								}
 							]
 						}
@@ -207,15 +181,26 @@
 				{
 					"name": "list_comments",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8000/orders/:id/comments",
+							"raw": "localhost:8000/api/orders/:id/comments",
 							"host": [
 								"localhost"
 							],
 							"port": "8000",
 							"path": [
+								"api",
 								"orders",
 								":id",
 								"comments"
@@ -231,13 +216,23 @@
 					"response": []
 				},
 				{
-					"name": "edit_comment_id",
+					"name": "update_order_id",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PATCH",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"comment\": \"Hello Petya\"\r\n}",
+							"raw": "{\r\n    \"course_type\": \"vip\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -245,64 +240,13 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8000/orders/comment/:id",
+							"raw": "localhost:8000/api/orders/:id",
 							"host": [
 								"localhost"
 							],
 							"port": "8000",
 							"path": [
-								"orders",
-								"comment",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "6"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "destroy_comment_id",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "localhost:8000/orders/comment/:id",
-							"host": [
-								"localhost"
-							],
-							"port": "8000",
-							"path": [
-								"orders",
-								"comment",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "5"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "full_update_order_id",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "localhost:8000/orders/:id",
-							"host": [
-								"localhost"
-							],
-							"port": "8000",
-							"path": [
+								"api",
 								"orders",
 								":id"
 							],
@@ -324,15 +268,26 @@
 				{
 					"name": "list_groups",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8000/groups",
+							"raw": "localhost:8000/api/groups",
 							"host": [
 								"localhost"
 							],
 							"port": "8000",
 							"path": [
+								"api",
 								"groups"
 							]
 						}
@@ -342,11 +297,21 @@
 				{
 					"name": "create_groups",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"june-2022\"\r\n}",
+							"raw": "{\r\n    \"name\": \"june-2023\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -354,12 +319,13 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8000/groups",
+							"raw": "localhost:8000/api/groups",
 							"host": [
 								"localhost"
 							],
 							"port": "8000",
 							"path": [
+								"api",
 								"groups"
 							]
 						}
@@ -369,11 +335,21 @@
 				{
 					"name": "create_order",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Oleh\",\r\n    \"surname\": \"Ostapenko\",\r\n    \"email\": \"ytoxos@gmail.com\",\r\n    \"phone\": 380675760201,\r\n    \"age\": 48,\r\n    \"course\": \"PCX\",\r\n    \"course_format\": \"online\",\r\n    \"course_type\": \"vip\",\r\n    \"status\": \"in work\",\r\n    \"sum\": 45000,\r\n    \"already_paid\": 45000\r\n}",
+							"raw": "{\r\n    \"name\": \"Max\",\r\n    \"surname\": \"Stirlitc\",\r\n    \"email\": \"stirlitc@gmail.com\",\r\n    \"phone\": 380984563738,\r\n    \"age\": 45,\r\n    \"course\": \"PCX\",\r\n    \"course_format\": \"online\",\r\n    \"course_type\": \"vip\",\r\n    \"sum\": 45000,\r\n    \"already_paid\": 45000\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -381,20 +357,21 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8000/groups/:id/orders",
+							"raw": "localhost:8000/api/groups/:id/order",
 							"host": [
 								"localhost"
 							],
 							"port": "8000",
 							"path": [
+								"api",
 								"groups",
 								":id",
-								"orders"
+								"order"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": "6"
+									"value": "1"
 								}
 							]
 						}
@@ -404,62 +381,262 @@
 				{
 					"name": "list_orders_group",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8000/groups/:id/orders",
+							"raw": "localhost:8000/api/groups/:id/order",
 							"host": [
 								"localhost"
 							],
 							"port": "8000",
 							"path": [
+								"api",
 								"groups",
 								":id",
-								"orders"
+								"order"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": "6"
+									"value": "1"
 								}
 							]
 						}
 					},
 					"response": []
-				},
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
 				{
-					"name": "get_group_id",
+					"name": "list_users",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:8000/groups/:id",
-							"host": [
-								"localhost"
-							],
-							"port": "8000",
-							"path": [
-								"groups",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "6"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "update_group_id",
-					"request": {
-						"method": "PATCH",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"mar-2023\"\r\n}",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8000/api/users",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const res = pm.response.json();\r",
+									"pm.environment.set('accessToken', res.access);\r",
+									"pm.environment.set('refreshToken', res.refresh);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "admin@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8000/api/auth",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refresh",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const res = pm.response.json();\r",
+									"pm.environment.set('accessToken', res.access);\r",
+									"pm.environment.set('refreshToken', res.refresh);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{refreshToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/api/auth/refresh",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "me",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/api/auth/me",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "activate_user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/api/auth/activate/",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"activate",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "recovery_password_request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"ytoxos@gmail.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -467,19 +644,167 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8000/groups/:id",
+							"raw": "localhost:8000/auth/recovery_password",
 							"host": [
 								"localhost"
 							],
 							"port": "8000",
 							"path": [
-								"groups",
-								":id"
+								"auth",
+								"recovery_password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "recovery_password",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"admin2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/api/auth/recovery_password/",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"recovery_password",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "activate_request_user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"ytoxos@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/api/auth/activate",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"activate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "create_user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"ytoxos@gmail.com\",\r\n    \"profile\": {\r\n        \"name\": \"Oleh\",\r\n        \"surname\": \"Ostapenko\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/api/admin/users",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"admin",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user_ban",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/api/admin/users/:id/ban",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"admin",
+								"users",
+								":id",
+								"ban"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": "7"
+									"value": "2"
 								}
 							]
 						}
@@ -487,24 +812,37 @@
 					"response": []
 				},
 				{
-					"name": "destroy_group_id",
+					"name": "user_unban",
 					"request": {
-						"method": "DELETE",
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
 						"header": [],
 						"url": {
-							"raw": "localhost:8000/groups/:id",
+							"raw": "localhost:8000/api/admin/users/:id/unban",
 							"host": [
 								"localhost"
 							],
 							"port": "8000",
 							"path": [
-								"groups",
-								":id"
+								"api",
+								"admin",
+								"users",
+								":id",
+								"unban"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": "9"
+									"value": "2"
 								}
 							]
 						}
