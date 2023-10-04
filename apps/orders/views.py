@@ -18,7 +18,7 @@ class OrdersListView(GenericAPIView, ListModelMixin):
     """
     serializer_class = OrderSerializer
     queryset = OrderModel.objects.prefetch_related('comments')
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAdminUser,)
     filterset_class = OrderFilter
 
     def get(self, request, *args, **kwargs):

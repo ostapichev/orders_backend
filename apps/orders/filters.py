@@ -35,8 +35,3 @@ class OrderFilter(filters.FilterSet):
             'manager',
         )
     )
-
-    
-
-
-

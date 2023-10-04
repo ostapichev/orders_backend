@@ -34,4 +34,3 @@ class UserManager(BaseUserManager):
 
     def all_with_profiles(self):
         return self.select_related('profile')
-

@@ -6,6 +6,7 @@ from rest_framework.response import Response
 
 from drf_yasg.utils import no_body, swagger_auto_schema
 
+from core.dataclasses.user_dataclass import UserDataClass
 from core.permission.is_superuser import IsSuperUser
 
 from apps.users.models import UserModel as User
