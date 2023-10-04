@@ -1,7 +1,7 @@
 from django.http import Http404
 
 from rest_framework import status
-from rest_framework.generics import GenericAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView
+from rest_framework.generics import GenericAPIView, get_object_or_404
 from rest_framework.mixins import ListModelMixin
 from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
@@ -18,8 +18,8 @@ class OrdersListView(GenericAPIView, ListModelMixin):
     """
     serializer_class = OrderSerializer
     queryset = OrderModel.objects.prefetch_related('comments')
-    filterset_class = OrderFilter
     permission_classes = (AllowAny,)
+    filterset_class = OrderFilter
 
     def get(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
@@ -29,8 +29,6 @@ class OrderRetrieveUpdateView(GenericAPIView):
     """
         get:
             Get order by id
-        put:
-            Full update order by id
         patch:
             Partial update order by id
 
@@ -39,12 +37,14 @@ class OrderRetrieveUpdateView(GenericAPIView):
     queryset = OrderModel.objects.all()
     permission_classes = (IsAdminUser,)
 
+    def get(self, *args, **kwargs):
+        order = get_object_or_404(OrderModel, pk=kwargs['pk'])
+        serializer = OrderSerializer(order)
+        return Response(serializer.data, status.HTTP_200_OK)
+
     def patch(self, *args, **kwargs):
-        try:
-            order = OrderModel.objects.get(pk=kwargs['pk'])
-        except OrderModel.DoesNotExist:
-            raise Http404()
-        if not self.request.user.id != order.manager_id:
+        order = get_object_or_404(OrderModel, pk=kwargs['pk'])
+        if self.request.user.id != order.manager_id:
             raise Http404()
         serializer = OrderSerializer(order, data=self.request.data, partial=True)
         serializer.is_valid(raise_exception=True)
@@ -59,6 +59,7 @@ class CommentListCreateView(GenericAPIView):
         post:
             Create comment under order by id
     """
+    serializer_class = CommentSerializer
     queryset = OrderModel.objects.all()
     permission_classes = (IsAdminUser,)
 
@@ -71,10 +72,7 @@ class CommentListCreateView(GenericAPIView):
         return Response(serializer.data, status.HTTP_200_OK)
 
     def post(self, *args, **kwargs):
-        try:
-            order = OrderModel.objects.get(pk=kwargs['pk'])
-        except OrderModel.DoesNotExist:
-            raise Http404()
+        order = get_object_or_404(OrderModel, pk=kwargs['pk'])
         if order.manager_id is not None and self.request.user.id != order.manager_id:
             raise Http404()
         serializer = CommentSerializer(data=self.request.data)

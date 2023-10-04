@@ -13,6 +13,12 @@ from .serializers import GroupSerializer
 
 
 class GroupsListCreateView(GenericAPIView, CreateModelMixin, ListModelMixin):
+    """
+        get:
+            Get all groups
+        post:
+            Create new group
+    """
     serializer_class = GroupSerializer
     queryset = GroupModel.objects.all()
     permission_classes = (IsAdminUser,)
@@ -25,6 +31,13 @@ class GroupsListCreateView(GenericAPIView, CreateModelMixin, ListModelMixin):
 
 
 class GroupOrderListCreateView(GenericAPIView):
+    """
+        get:
+            Get order by id in group
+        post:
+            Create new order in group by id.
+    """
+    serializer_class = OrderSerializer
     queryset = GroupModel.objects.all()
     permission_classes = (IsAdminUser,)
 

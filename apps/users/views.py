@@ -11,6 +11,9 @@ UserModel: User = get_user_model()
 
 
 class UserListView(ListAPIView):
+    """
+        Get all users
+    """
     serializer_class = UserSerializer
     queryset = UserModel.objects.all_with_profiles()
     permission_classes = (IsSuperUser,)

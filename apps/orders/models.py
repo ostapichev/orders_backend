@@ -24,11 +24,11 @@ class OrderModel(BaseModel):
         validators.MaxValueValidator(90)
     ])
     course = models.CharField(
-        max_length=11, choices=CourseChoices.choices, default=CourseChoices.all_courses)
+        max_length=11, choices=CourseChoices.choices, default='all_courses')
     course_format = models.CharField(
-        max_length=11, choices=CourseFormatChoices.choices, default=CourseFormatChoices.all_formats)
+        max_length=11, choices=CourseFormatChoices.choices, default='all_formats')
     course_type = models.CharField(
-        max_length=9, choices=CourseTypeChoices.choices, default=CourseTypeChoices.all_types)
+        max_length=9, choices=CourseTypeChoices.choices, default='all_types')
     already_paid = models.IntegerField(
         validators=[
             validators.MinValueValidator(1),
