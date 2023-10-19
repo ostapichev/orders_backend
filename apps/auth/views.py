@@ -21,7 +21,7 @@ class ActivateUserRequestView(GenericAPIView):
     """
         Activation user by email
     """
-    permission_classes = (IsSuperUser,)
+    permission_classes = (AllowAny,)
     serializer_class = EmailSerializer
 
     def post(self, *args, **kwargs):

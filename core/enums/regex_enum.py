@@ -4,7 +4,7 @@ from enum import Enum
 class RegExEnum(Enum):
     NAME = (
         r'^[a-zа-яёіA-ZА-ЯЇЁ]+$',
-        'First letter uppercase min 2 max 35 ch'
+        'First letter uppercase min 2 max 20 ch'
     )
     PHONE = (
         r'^\d{12}$',

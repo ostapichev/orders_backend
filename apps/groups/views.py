@@ -3,7 +3,7 @@ from django.http import Http404
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 
 from ..orders.models import OrderModel
@@ -21,7 +21,7 @@ class GroupsListCreateView(GenericAPIView, CreateModelMixin, ListModelMixin):
     """
     serializer_class = GroupSerializer
     queryset = GroupModel.objects.all()
-    permission_classes = (IsAdminUser,)
+    permission_classes = (AllowAny,)
 
     def get(self, request,  *args, **kwargs):
         return super().list(request, *args, **kwargs)
@@ -39,7 +39,7 @@ class GroupOrderListCreateView(GenericAPIView):
     """
     serializer_class = OrderSerializer
     queryset = GroupModel.objects.all()
-    permission_classes = (IsAdminUser,)
+    permission_classes = (AllowAny,)
 
     def get(self, *args, **kwargs):
         pk = kwargs['pk']

@@ -35,7 +35,7 @@ class OrderRetrieveUpdateView(GenericAPIView):
     """
     serializer_class = OrderSerializer
     queryset = OrderModel.objects.all()
-    permission_classes = (IsAdminUser,)
+    permission_classes = (AllowAny,)
 
     def get(self, *args, **kwargs):
         order = get_object_or_404(OrderModel, pk=kwargs['pk'])
@@ -44,8 +44,8 @@ class OrderRetrieveUpdateView(GenericAPIView):
 
     def patch(self, *args, **kwargs):
         order = get_object_or_404(OrderModel, pk=kwargs['pk'])
-        if self.request.user.id != order.manager_id:
-            raise Http404()
+        """if self.request.user.id != order.manager_id:
+            raise Http404()"""
         serializer = OrderSerializer(order, data=self.request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -61,7 +61,7 @@ class CommentListCreateView(GenericAPIView):
     """
     serializer_class = CommentSerializer
     queryset = OrderModel.objects.all()
-    permission_classes = (IsAdminUser,)
+    permission_classes = (AllowAny,)
 
     def get(self, *args, **kwargs):
         pk = kwargs['pk']
