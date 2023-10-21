@@ -15,7 +15,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
-    group = GroupSerializer(read_only=True)
+    
     manager = ProfileSerializer(read_only=True)
 
     class Meta:
