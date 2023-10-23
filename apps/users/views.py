@@ -1,7 +1,6 @@
 from django.contrib.auth import get_user_model
 
 from rest_framework.generics import ListAPIView
-from rest_framework.permissions import AllowAny
 
 from core.permission.is_superuser import IsSuperUser
 
@@ -18,7 +17,7 @@ class UserListView(ListAPIView):
     """
     serializer_class = UserSerializer
     queryset = UserModel.objects.all_with_profiles()
-    permission_classes = (AllowAny,)
+    permission_classes = (IsSuperUser,)
     filterset_class = UserFilter
 
     def get_permissions(self):

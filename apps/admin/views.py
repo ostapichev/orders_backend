@@ -2,7 +2,6 @@ from django.contrib.auth import get_user_model
 
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, GenericAPIView
-from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
 from drf_yasg.utils import no_body, swagger_auto_schema
@@ -21,7 +20,7 @@ class UserCreateView(CreateAPIView):
     """
     serializer_class = UserSerializer
     queryset = UserModel.objects.all_with_profiles()
-    permission_classes = (AllowAny,)
+    permission_classes = (IsSuperUser,)
 
 
 class UserBanView(GenericAPIView):
@@ -30,7 +29,7 @@ class UserBanView(GenericAPIView):
     """
     serializer_class = UserSerializer
     queryset = UserModel.objects.all()
-    permission_classes = (AllowAny,)
+    permission_classes = (IsSuperUser,)
 
     @swagger_auto_schema(request_body=no_body)
     def patch(self, *args, **kwargs):
@@ -51,7 +50,7 @@ class UserUnBanView(GenericAPIView):
     """
     serializer_class = UserSerializer
     queryset = UserModel.objects.all()
-    permission_classes = (AllowAny,)
+    permission_classes = (IsSuperUser,)
 
     @swagger_auto_schema(request_body=no_body)
     def patch(self, *args, **kwargs):

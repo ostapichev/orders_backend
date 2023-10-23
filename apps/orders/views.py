@@ -3,7 +3,7 @@ from django.http import Http404
 from rest_framework import status
 from rest_framework.generics import GenericAPIView, get_object_or_404
 from rest_framework.mixins import ListModelMixin
-from rest_framework.permissions import AllowAny, IsAdminUser
+from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
 from .choices import StatusChoices
@@ -18,7 +18,7 @@ class OrdersListView(GenericAPIView, ListModelMixin):
     """
     serializer_class = OrderSerializer
     queryset = OrderModel.objects.prefetch_related('comments')
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAdminUser,)
     filterset_class = OrderFilter
 
     def get(self, request, *args, **kwargs):
@@ -35,7 +35,7 @@ class OrderRetrieveUpdateView(GenericAPIView):
     """
     serializer_class = OrderSerializer
     queryset = OrderModel.objects.all()
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAdminUser,)
 
     def get(self, *args, **kwargs):
         order = get_object_or_404(OrderModel, pk=kwargs['pk'])
@@ -61,7 +61,7 @@ class CommentListCreateView(GenericAPIView):
     """
     serializer_class = CommentSerializer
     queryset = OrderModel.objects.all()
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAdminUser,)
 
     def get(self, *args, **kwargs):
         pk = kwargs['pk']
