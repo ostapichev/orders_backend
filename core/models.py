@@ -14,12 +14,11 @@ class BaseModel(models.Model):
 
 class ProfileModel(BaseModel):
     name = models.CharField(max_length=50, validators=[
-        validators.RegexValidator(RegExEnum.NAME.pattern, RegExEnum.NAME.msg)
+        validators.RegexValidator(RegExEnum.BASE_NAME_PATTERN.pattern, RegExEnum.BASE_NAME_PATTERN.msg)
     ])
     surname = models.CharField(max_length=50, validators=[
-        validators.RegexValidator(RegExEnum.NAME.pattern, RegExEnum.NAME.msg)
+        validators.RegexValidator(RegExEnum.BASE_NAME_PATTERN.pattern, RegExEnum.BASE_NAME_PATTERN.msg)
     ])
 
     class Meta:
         db_table = 'profile'
-

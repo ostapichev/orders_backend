@@ -9,7 +9,7 @@ from .managers import GroupManager
 
 class GroupModel(BaseModel):
     name = models.CharField(max_length=35, validators=[
-        validators.RegexValidator(RegExEnum.GROUP.pattern, RegExEnum.NAME.msg)
+        validators.RegexValidator(RegExEnum.GROUP.pattern, RegExEnum.BASE_NAME_PATTERN.msg)
     ])
     objects = GroupManager()
 

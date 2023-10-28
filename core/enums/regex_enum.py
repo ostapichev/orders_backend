@@ -2,8 +2,8 @@ from enum import Enum
 
 
 class RegExEnum(Enum):
-    NAME = (
-        r'^[a-zа-яёіA-ZА-ЯЇЁ]+$',
+    BASE_NAME_PATTERN = (
+        r'^[a-zA-Zа-яА-яёЁіІїЇ]{1,20}$',
         'First letter uppercase min 2 max 20 ch'
     )
     PHONE = (
@@ -11,7 +11,7 @@ class RegExEnum(Enum):
         'Phone number must be 12 digits'
     )
     GROUP = (
-        r'^[a-zA-Z0-9\-]+$',
+        r"^[a-z]{3}-\d{4}$",
         'The group name must contain letters and numbers'
     )
 

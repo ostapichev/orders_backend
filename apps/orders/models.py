@@ -10,10 +10,10 @@ from apps.orders.choices import CourseChoices, CourseFormatChoices, CourseTypeCh
 
 class OrderModel(BaseModel):
     name = models.CharField(max_length=35, validators=[
-        validators.RegexValidator(RegExEnum.NAME.pattern, RegExEnum.NAME.msg)
+        validators.RegexValidator(RegExEnum.BASE_NAME_PATTERN.pattern, RegExEnum.BASE_NAME_PATTERN.msg)
     ])
     surname = models.CharField(max_length=35, validators=[
-        validators.RegexValidator(RegExEnum.NAME.pattern, RegExEnum.NAME.msg)
+        validators.RegexValidator(RegExEnum.BASE_NAME_PATTERN.pattern, RegExEnum.BASE_NAME_PATTERN.msg)
     ])
     email = models.EmailField(max_length=254, unique=True)
     phone = models.BigIntegerField(unique=True, validators=[
@@ -32,12 +32,12 @@ class OrderModel(BaseModel):
     already_paid = models.IntegerField(
         validators=[
             validators.MinValueValidator(1),
-            validators.MaxValueValidator(2147483647)
+            validators.MaxValueValidator(1000000)
         ])
     sum = models.IntegerField(
         validators=[
             validators.MinValueValidator(1),
-            validators.MaxValueValidator(2147483647)
+            validators.MaxValueValidator(1000000)
         ])
     utm = models.CharField(max_length=20, null=True)
     msg = models.CharField(max_length=20, null=True)
