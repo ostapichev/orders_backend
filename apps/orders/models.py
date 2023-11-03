@@ -41,7 +41,7 @@ class OrderModel(BaseModel):
         ])
     utm = models.CharField(max_length=20, null=True)
     msg = models.CharField(max_length=20, null=True)
-    status = models.CharField(max_length=12, choices=StatusChoices.choices, default=StatusChoices.new)
+    status = models.CharField(max_length=12, choices=StatusChoices.choices, default=StatusChoices.new_order)
     group = models.ForeignKey(GroupModel, on_delete=models.PROTECT, related_name='orders', default='all_groups')
     manager = models.ForeignKey(ProfileModel, on_delete=models.PROTECT, related_name='order', null=True)
 

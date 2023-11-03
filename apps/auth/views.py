@@ -1,9 +1,12 @@
 from django.contrib.auth import get_user_model
+from django.utils.decorators import method_decorator
 
 from rest_framework import status
 from rest_framework.generics import GenericAPIView, RetrieveAPIView, get_object_or_404
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
+
+from drf_yasg.utils import swagger_auto_schema
 
 from core.permission.is_superuser import IsSuperUser
 from core.services.email_service import EmailService
@@ -33,6 +36,7 @@ class ActivateUserRequestView(GenericAPIView):
         return Response('Check email of the manager for the registration', status.HTTP_200_OK)
 
 
+@method_decorator(name='post', decorator=swagger_auto_schema(security=[]))
 class ActivateUserView(GenericAPIView):
     """
         Registration user by token
@@ -68,6 +72,7 @@ class RecoveryPasswordRequestView(GenericAPIView):
         return Response('Check email of the manager for the recovery password', status.HTTP_200_OK)
 
 
+@method_decorator(name='post', decorator=swagger_auto_schema(security=[]))
 class RecoveryPasswordView(GenericAPIView):
     """
         New password by token
