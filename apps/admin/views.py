@@ -2,7 +2,6 @@ from django.contrib.auth import get_user_model
 
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, GenericAPIView
-from rest_framework.mixins import ListModelMixin
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
@@ -11,7 +10,6 @@ from drf_yasg.utils import no_body, swagger_auto_schema
 from core.permission.is_superuser import IsSuperUser
 
 from apps.orders.choices import StatusChoices
-from apps.orders.filters import OrderFilter
 from apps.orders.models import OrderModel
 from apps.orders.serializers import OrderSerializer
 from apps.users.models import UserModel as User
