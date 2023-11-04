@@ -95,7 +95,7 @@ class ExcelExportAPIView(GenericAPIView):
     serializer_class = OrderSerializer
     permission_classes = (IsAdminUser,)
 
-    def get(self, request, *args, **kwargs):
+    def get(self, *args, **kwargs):
         queryset = OrderModel.objects.all()
         serializer = OrderSerializer(queryset, many=True)
         data = []
