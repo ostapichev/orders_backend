@@ -93,18 +93,19 @@ class ExcelExportAPIView(GenericAPIView):
         Create exel file from order
     """
     serializer_class = OrderSerializer
+    queryset = OrderModel.objects.all()
     permission_classes = (IsAdminUser,)
 
     def get(self, *args, **kwargs):
-        queryset = OrderModel.objects.all()
-        serializer = OrderSerializer(queryset, many=True)
+        orders = OrderModel.objects.all()
+        serializer = OrderSerializer(orders, many=True)
         data = []
         for item in serializer.data:
             processed_data = {}
             for key, value in item.items():
                 if isinstance(value, OrderedDict):
                     selected_keys = ['name']
-                    selected_data = ', '.join([f"{value[key]}" for key in selected_keys])
+                    selected_data = ', '.join([f'{value[key]}' for key in selected_keys])
                     processed_data[key] = selected_data
                 else:
                     processed_data[key] = value
@@ -112,11 +113,11 @@ class ExcelExportAPIView(GenericAPIView):
         df = pd.DataFrame(data)
         excluded_columns = ['msg', 'utm', 'comments']
         df = df.drop(columns=excluded_columns, axis=1)
-        excel_file_path = 'exported_data.xlsx'
+        excel_file_path = 'orders_data.xlsx'
         df.to_excel(excel_file_path, index=False)
         with open(excel_file_path, 'rb') as excel_file:
             response = HttpResponse(
                 excel_file.read(),
                 content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-            response['Content-Disposition'] = 'attachment; filename=exported_data.xlsx'
-        return response
+            response['Content-Disposition'] = 'attachment; filename=orders_data.xlsx'
+        return Response(serializer.data, status.HTTP_200_OK)
