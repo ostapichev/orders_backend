@@ -1,11 +1,12 @@
 from collections import OrderedDict
+from io import BytesIO
 
-from django.http import Http404, HttpResponse
+from django.http import FileResponse, Http404, HttpResponse
 
 from rest_framework import status
 from rest_framework.generics import GenericAPIView, get_object_or_404
 from rest_framework.mixins import ListModelMixin
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 
 import pandas as pd
@@ -89,12 +90,9 @@ class CommentListCreateView(GenericAPIView):
 
 
 class ExcelExportAPIView(GenericAPIView):
-    """
-        Create exel file from order
-    """
     serializer_class = OrderSerializer
     queryset = OrderModel.objects.all()
-    permission_classes = (IsAdminUser,)
+    permission_classes = (AllowAny,)
 
     def get(self, *args, **kwargs):
         orders = OrderModel.objects.all()
@@ -113,11 +111,18 @@ class ExcelExportAPIView(GenericAPIView):
         df = pd.DataFrame(data)
         excluded_columns = ['msg', 'utm', 'comments']
         df = df.drop(columns=excluded_columns, axis=1)
-        excel_file_path = 'orders_data.xlsx'
-        df.to_excel(excel_file_path, index=False)
-        with open(excel_file_path, 'rb') as excel_file:
+        excel_buffer = BytesIO()
+        try:
+            df.to_excel(excel_buffer, index=False)
+            excel_buffer.seek(0)
+            excel_buffer_content = excel_buffer.getvalue()
             response = HttpResponse(
-                excel_file.read(),
-                content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+                excel_buffer_content,
+                content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            )
             response['Content-Disposition'] = 'attachment; filename=orders_data.xlsx'
-        return Response(serializer.data, status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        finally:
+            excel_buffer.close()
+        return response
