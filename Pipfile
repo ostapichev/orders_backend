@@ -13,6 +13,7 @@ django-cors-headers = "*"
 drf-yasg = "*"
 openpyxl = "*"
 pandas = "*"
+bootstrap4 = "*"
 
 [dev-packages]
 isort = "*"
