@@ -70,6 +70,9 @@ class UserUnBanView(GenericAPIView):
 
 
 class StatisticOrdersView(GenericAPIView):
+    """
+        Static orders
+    """
     serializer_class = OrderSerializer
     permission_classes = (IsAdminUser,)
 
@@ -91,8 +94,12 @@ class StatisticOrdersView(GenericAPIView):
 
 
 class StatisticUsersView(GenericAPIView):
-    serializer_class = OrderSerializer
+    """
+        Static users
+    """
+    serializer_class = UserSerializer
     permission_classes = (IsAdminUser,)
+    queryset = UserModel.objects.all()
 
     def get(self, request, *args, **kwargs):
         count_orders = OrderModel.objects.filter(manager=kwargs['pk']).count()
