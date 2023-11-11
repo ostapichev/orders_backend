@@ -78,6 +78,7 @@ class StatisticOrdersView(GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         item_count = OrderModel.objects.count()
+        user_count = UserModel.objects.count()
         in_work = OrderModel.objects.filter(status=StatusChoices.in_work).count()
         new_order = OrderModel.objects.filter(status=StatusChoices.new_order).count()
         agree = OrderModel.objects.filter(status=StatusChoices.agree).count()
@@ -85,6 +86,7 @@ class StatisticOrdersView(GenericAPIView):
         dubbing = OrderModel.objects.filter(status=StatusChoices.dubbing).count()
         return Response({
             'item_count': item_count,
+            'user_count': user_count,
             StatusChoices.in_work: in_work,
             StatusChoices.new_order: new_order,
             StatusChoices.agree: agree,
