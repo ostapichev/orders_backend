@@ -49,8 +49,8 @@ class OrderRetrieveUpdateView(GenericAPIView):
 
     def patch(self, *args, **kwargs):
         order = get_object_or_404(OrderModel, pk=kwargs['pk'])
-        """if self.request.user.id != order.manager_id:
-            raise Http404()"""
+        if self.request.user.id != order.manager_id:
+            raise Http404()
         serializer = OrderSerializer(order, data=self.request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -92,7 +92,7 @@ class CommentListCreateView(GenericAPIView):
 class ExcelExportAPIView(GenericAPIView):
     serializer_class = OrderSerializer
     queryset = OrderModel.objects.all()
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAdminUser,)
 
     def get(self, *args, **kwargs):
         orders = OrderModel.objects.all()

@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.http import Http404
 
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, GenericAPIView
@@ -71,7 +72,7 @@ class UserUnBanView(GenericAPIView):
 
 class StatisticOrdersView(GenericAPIView):
     """
-        Static orders
+        Statistic orders
     """
     serializer_class = OrderSerializer
     permission_classes = (IsAdminUser,)
@@ -84,7 +85,7 @@ class StatisticOrdersView(GenericAPIView):
         agree = OrderModel.objects.filter(status=StatusChoices.agree).count()
         disagree = OrderModel.objects.filter(status=StatusChoices.disagree).count()
         dubbing = OrderModel.objects.filter(status=StatusChoices.dubbing).count()
-        return Response({
+        statistic_orders = {
             'item_count': item_count,
             'user_count': user_count,
             StatusChoices.in_work: in_work,
@@ -92,23 +93,28 @@ class StatisticOrdersView(GenericAPIView):
             StatusChoices.agree: agree,
             StatusChoices.disagree: disagree,
             StatusChoices.dubbing: dubbing
-        }, status.HTTP_200_OK)
+        }
+        return Response(statistic_orders, status.HTTP_200_OK)
 
 
 class StatisticUsersView(GenericAPIView):
     """
-        Static users
+        Statistic users
     """
     serializer_class = UserSerializer
-    permission_classes = (IsAdminUser,)
+    permission_classes = (IsSuperUser,)
     queryset = UserModel.objects.all()
 
     def get(self, request, *args, **kwargs):
-        count_orders = OrderModel.objects.filter(manager=kwargs['pk']).count()
+        user_id = kwargs['pk']
+        if not UserModel.objects.filter(pk=user_id).exists():
+            raise Http404()
+        count_orders = OrderModel.objects.filter(manager=user_id).count()
         in_work = OrderModel.objects.filter(manager=kwargs['pk'], status='in_work').count()
         agree = OrderModel.objects.filter(manager=kwargs['pk'], status='agree').count()
-        return Response({
+        statistic_user = {
             'count_orders': count_orders,
-            'in_work': in_work,
-            'agree': agree
-        }, status.HTTP_200_OK)
+            StatusChoices.in_work: in_work,
+            StatusChoices.agree: agree
+        }
+        return Response(statistic_user, status.HTTP_200_OK)
