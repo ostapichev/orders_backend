@@ -1,8 +1,7 @@
 from django.contrib.auth import get_user_model
-from django.http import Http404
 
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, GenericAPIView, ListAPIView, ListCreateAPIView
+from rest_framework.generics import GenericAPIView, ListCreateAPIView, get_object_or_404
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
@@ -20,25 +19,12 @@ from apps.orders.serializers import OrderSerializer
 UserModel: User = get_user_model()
 
 
-class UserListView(ListAPIView):
-    """
-        Get all users
-    """
-    serializer_class = UserSerializer
-    queryset = UserModel.objects.all_with_profiles()
-    permission_classes = (IsSuperUser,)
-    filterset_class = UserFilter
-
-    def get_permissions(self):
-        return super().get_permissions()
-
-    def get_queryset(self):
-        return super().get_queryset().exclude(pk=self.request.user.pk)
-
-
 class UserListCreateView(ListCreateAPIView):
     """
-        Create user
+        get:
+            Get all users
+        post:
+            Create new user
     """
     serializer_class = UserSerializer
     queryset = UserModel.objects.all_with_profiles()
@@ -96,7 +82,7 @@ class UserUnBanView(GenericAPIView):
 
 class StatisticOrdersView(GenericAPIView):
     """
-        Statistic orders
+        Get statistic orders
     """
     serializer_class = OrderSerializer
     permission_classes = (IsAdminUser,)
@@ -123,7 +109,7 @@ class StatisticOrdersView(GenericAPIView):
 
 class StatisticUsersView(GenericAPIView):
     """
-        Statistic users
+        Get statistic users
     """
     serializer_class = UserSerializer
     permission_classes = (IsSuperUser,)
@@ -131,8 +117,7 @@ class StatisticUsersView(GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         user_id = kwargs['pk']
-        if not UserModel.objects.filter(pk=user_id).exists():
-            raise Http404()
+        get_object_or_404(UserModel, pk=user_id)
         count_orders = OrderModel.objects.filter(manager=user_id).count()
         in_work = OrderModel.objects.filter(manager=kwargs['pk'], status='in_work').count()
         agree = OrderModel.objects.filter(manager=kwargs['pk'], status='agree').count()

@@ -1,12 +1,12 @@
 from collections import OrderedDict
 from io import BytesIO
 
-from django.http import FileResponse, Http404, HttpResponse
+from django.http import Http404, HttpResponse
 
 from rest_framework import status
 from rest_framework.generics import GenericAPIView, get_object_or_404
 from rest_framework.mixins import ListModelMixin
-from rest_framework.permissions import AllowAny, IsAdminUser
+from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
 import pandas as pd
