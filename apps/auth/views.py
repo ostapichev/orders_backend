@@ -12,8 +12,8 @@ from core.permission.is_superuser import IsSuperUser
 from core.services.email_service import EmailService
 from core.services.jwt_service import ActivateToken, JWTService, RecoveryToken
 
-from apps.users.models import UserModel as User
-from apps.users.serializers import UserSerializer
+from apps.admin.models import UserModel as User
+from apps.admin.serializers import UserSerializer
 
 from .serializers import EmailSerializer, PasswordSerializer
 

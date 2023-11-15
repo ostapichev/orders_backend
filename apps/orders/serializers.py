@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
-from ..groups.serializers import GroupSerializer
-from ..users.serializers import ProfileSerializer
+from ..admin.serializers import ProfileSerializer
 from .models import CommentModel, OrderModel
 
 

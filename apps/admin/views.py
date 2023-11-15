@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.http import Http404
 
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, GenericAPIView
+from rest_framework.generics import CreateAPIView, GenericAPIView, ListAPIView, ListCreateAPIView
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
@@ -10,22 +10,46 @@ from drf_yasg.utils import no_body, swagger_auto_schema
 
 from core.permission.is_superuser import IsSuperUser
 
+from apps.admin.filters import UserFilter
+from apps.admin.models import UserModel as User
+from apps.admin.serializers import UserSerializer
 from apps.orders.choices import StatusChoices
 from apps.orders.models import OrderModel
 from apps.orders.serializers import OrderSerializer
-from apps.users.models import UserModel as User
-from apps.users.serializers import UserSerializer
 
 UserModel: User = get_user_model()
 
 
-class UserCreateView(CreateAPIView):
+class UserListView(ListAPIView):
+    """
+        Get all users
+    """
+    serializer_class = UserSerializer
+    queryset = UserModel.objects.all_with_profiles()
+    permission_classes = (IsSuperUser,)
+    filterset_class = UserFilter
+
+    def get_permissions(self):
+        return super().get_permissions()
+
+    def get_queryset(self):
+        return super().get_queryset().exclude(pk=self.request.user.pk)
+
+
+class UserListCreateView(ListCreateAPIView):
     """
         Create user
     """
     serializer_class = UserSerializer
     queryset = UserModel.objects.all_with_profiles()
     permission_classes = (IsSuperUser,)
+    filterset_class = UserFilter
+    
+    def get_permissions(self):
+        return super().get_permissions()
+
+    def get_queryset(self):
+        return super().get_queryset().exclude(pk=self.request.user.pk)
 
 
 class UserBanView(GenericAPIView):

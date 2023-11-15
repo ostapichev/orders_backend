@@ -9,7 +9,7 @@ from rest_framework_simplejwt.tokens import BlacklistMixin, Token
 from core.enums.action_token_enum import ActionTokenEnum
 from core.exception.jwt_exception import JwtException
 
-from apps.users.models import UserModel as User
+from apps.admin.models import UserModel as User
 
 UserModel: User = get_user_model()
 ActionTokenClassType = Type[BlacklistMixin | Token]
