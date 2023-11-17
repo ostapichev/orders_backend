@@ -13,7 +13,7 @@ class UserManager(BaseUserManager):
         user = self.model(email=email, **kwargs)
         try:
             if kwargs['is_superuser']:
-                profile_data = {"name": "admin", "surname": "super"}
+                profile_data = {"name": "Admin", "surname": "Super"}
                 profile = ProfileModel(**profile_data)
                 profile.save()
                 user.profile = profile

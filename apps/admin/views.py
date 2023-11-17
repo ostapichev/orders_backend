@@ -86,6 +86,7 @@ class StatisticOrdersView(GenericAPIView):
     """
     serializer_class = OrderSerializer
     permission_classes = (IsAdminUser,)
+    super_user_count = 1
 
     def get(self, request, *args, **kwargs):
         item_count = OrderModel.objects.count()
@@ -97,7 +98,7 @@ class StatisticOrdersView(GenericAPIView):
         dubbing = OrderModel.objects.filter(status=StatusChoices.dubbing).count()
         statistic_orders = {
             'item_count': item_count,
-            'user_count': user_count,
+            'user_count': user_count - self.super_user_count,
             StatusChoices.in_work: in_work,
             StatusChoices.new_order: new_order,
             StatusChoices.agree: agree,
