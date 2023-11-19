@@ -11,7 +11,7 @@ from core.permission.is_superuser import IsSuperUser
 
 from apps.admin.filters import UserFilter
 from apps.admin.models import UserModel as User
-from apps.admin.serializers import UserSerializer
+from apps.admin.serializers import StatisticOrdersSerializer, UserSerializer
 from apps.orders.choices import StatusChoices
 from apps.orders.models import OrderModel
 from apps.orders.serializers import OrderSerializer
@@ -82,9 +82,9 @@ class UserUnBanView(GenericAPIView):
 
 class StatisticOrdersView(GenericAPIView):
     """
-        Get statistic orders
+    Get statistic orders
     """
-    serializer_class = OrderSerializer
+    serializer_class = StatisticOrdersSerializer
     permission_classes = (IsAdminUser,)
     super_user_count = 1
 
@@ -96,16 +96,19 @@ class StatisticOrdersView(GenericAPIView):
         agree = OrderModel.objects.filter(status=StatusChoices.agree).count()
         disagree = OrderModel.objects.filter(status=StatusChoices.disagree).count()
         dubbing = OrderModel.objects.filter(status=StatusChoices.dubbing).count()
+
         statistic_orders = {
             'item_count': item_count,
             'user_count': user_count - self.super_user_count,
-            StatusChoices.in_work: in_work,
-            StatusChoices.new_order: new_order,
-            StatusChoices.agree: agree,
-            StatusChoices.disagree: disagree,
-            StatusChoices.dubbing: dubbing
+            'in_work': in_work,
+            'new_order': new_order,
+            'agree': agree,
+            'disagree': disagree,
+            'dubbing': dubbing
         }
-        return Response(statistic_orders, status.HTTP_200_OK)
+
+        serializer = StatisticOrdersSerializer(statistic_orders)
+        return Response(serializer.data, status.HTTP_200_OK)
 
 
 class StatisticUsersView(GenericAPIView):

@@ -34,3 +34,22 @@ class UserSerializer(serializers.ModelSerializer):
                 'write_only': True
             }
         }
+
+
+class StatisticOrdersSerializer(serializers.Serializer):
+    item_count = serializers.IntegerField()
+    user_count = serializers.SerializerMethodField()
+    in_work = serializers.IntegerField()
+    new_order = serializers.IntegerField()
+    agree = serializers.IntegerField()
+    disagree = serializers.IntegerField()
+    dubbing = serializers.IntegerField()
+
+    def get_user_count(self, obj):
+        return obj['user_count']
+
+    class Meta:
+        fields = ('item_count', 'user_count', 'in_work', 'new_order', 'agree', 'disagree', 'dubbing')
+
+
+
