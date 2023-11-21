@@ -11,7 +11,7 @@ from core.permission.is_superuser import IsSuperUser
 
 from apps.admin.filters import UserFilter
 from apps.admin.models import UserModel as User
-from apps.admin.serializers import StatisticOrdersSerializer, UserSerializer
+from apps.admin.serializers import StatisticOrdersSerializer, StatisticUserSerializer, UserSerializer
 from apps.orders.choices import StatusChoices
 from apps.orders.models import OrderModel
 from apps.orders.serializers import OrderSerializer
@@ -115,7 +115,7 @@ class StatisticUsersView(GenericAPIView):
     """
         Get statistic users
     """
-    serializer_class = UserSerializer
+    serializer_class = StatisticUserSerializer
     permission_classes = (IsSuperUser,)
     queryset = UserModel.objects.all()
 
@@ -130,4 +130,5 @@ class StatisticUsersView(GenericAPIView):
             StatusChoices.in_work: in_work,
             StatusChoices.agree: agree
         }
-        return Response(statistic_user, status.HTTP_200_OK)
+        serializer = StatisticUserSerializer(statistic_user)
+        return Response(serializer.data, status.HTTP_200_OK)

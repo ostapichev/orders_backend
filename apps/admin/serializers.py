@@ -52,4 +52,12 @@ class StatisticOrdersSerializer(serializers.Serializer):
         fields = ('item_count', 'user_count', 'in_work', 'new_order', 'agree', 'disagree', 'dubbing')
 
 
+class StatisticUserSerializer(serializers.Serializer):
+    count_orders = serializers.IntegerField()
+    in_work = serializers.IntegerField()
+    agree = serializers.IntegerField()
+
+    class Meta:
+        fields = ('count_orders', 'in_work', 'agree')
+
 
