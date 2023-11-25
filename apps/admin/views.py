@@ -14,7 +14,6 @@ from apps.admin.models import UserModel as User
 from apps.admin.serializers import StatisticOrdersSerializer, StatisticUserSerializer, UserSerializer
 from apps.orders.choices import StatusChoices
 from apps.orders.models import OrderModel
-from apps.orders.serializers import OrderSerializer
 
 UserModel: User = get_user_model()
 
@@ -82,7 +81,7 @@ class UserUnBanView(GenericAPIView):
 
 class StatisticOrdersView(GenericAPIView):
     """
-    Get statistic orders
+        Statistic orders
     """
     serializer_class = StatisticOrdersSerializer
     permission_classes = (IsAdminUser,)
@@ -96,7 +95,6 @@ class StatisticOrdersView(GenericAPIView):
         agree = OrderModel.objects.filter(status=StatusChoices.agree).count()
         disagree = OrderModel.objects.filter(status=StatusChoices.disagree).count()
         dubbing = OrderModel.objects.filter(status=StatusChoices.dubbing).count()
-
         statistic_orders = {
             'item_count': item_count,
             'user_count': user_count - self.super_user_count,
@@ -106,7 +104,6 @@ class StatisticOrdersView(GenericAPIView):
             'disagree': disagree,
             'dubbing': dubbing
         }
-
         serializer = StatisticOrdersSerializer(statistic_orders)
         return Response(serializer.data, status.HTTP_200_OK)
 
@@ -119,7 +116,8 @@ class StatisticUsersView(GenericAPIView):
     permission_classes = (IsSuperUser,)
     queryset = UserModel.objects.all()
 
-    def get(self, request, *args, **kwargs):
+    @staticmethod
+    def get(*args, **kwargs):
         user_id = kwargs['pk']
         get_object_or_404(UserModel, pk=user_id)
         count_orders = OrderModel.objects.filter(manager=user_id).count()
