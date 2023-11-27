@@ -35,3 +35,9 @@ class OrderFilter(filters.FilterSet):
             'manager',
         )
     )
+
+
+class CommentFilter(filters.FilterSet):
+    order_by = filters.OrderingFilter(
+        fields=('id',)
+    )

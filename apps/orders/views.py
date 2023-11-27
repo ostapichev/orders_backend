@@ -12,7 +12,7 @@ from rest_framework.response import Response
 import pandas as pd
 
 from .choices import StatusChoices
-from .filters import OrderFilter
+from .filters import CommentFilter, OrderFilter
 from .models import CommentModel, OrderModel
 from .serializers import CommentSerializer, OrderSerializer
 
@@ -67,6 +67,7 @@ class CommentListCreateView(GenericAPIView):
     serializer_class = CommentSerializer
     queryset = OrderModel.objects.all()
     permission_classes = (IsAdminUser,)
+    filterset_class = CommentFilter
 
     def get(self, *args, **kwargs):
         pk = kwargs['pk']
