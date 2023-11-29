@@ -12,7 +12,7 @@ from rest_framework.response import Response
 import pandas as pd
 
 from .choices import StatusChoices
-from .filters import CommentFilter, OrderFilter
+from .filters import OrderFilter
 from .models import CommentModel, OrderModel
 from .serializers import CommentSerializer, OrderSerializer
 
@@ -57,7 +57,7 @@ class OrderRetrieveUpdateView(GenericAPIView):
         return Response(serializer.data, status.HTTP_200_OK)
 
 
-class CommentListCreateView(GenericAPIView):
+class CommentListCreateView(GenericAPIView, ListModelMixin):
     """
         get:
             Get all comments
@@ -65,17 +65,15 @@ class CommentListCreateView(GenericAPIView):
             Create comment under order by id
     """
     serializer_class = CommentSerializer
-    queryset = OrderModel.objects.all()
     permission_classes = (IsAdminUser,)
-    filterset_class = CommentFilter
 
-    def get(self, *args, **kwargs):
-        pk = kwargs['pk']
-        if not OrderModel.objects.filter(pk=pk).exists():
-            raise Http404()
-        comments = CommentModel.objects.filter(order_id=pk)
-        serializer = CommentSerializer(comments, many=True)
-        return Response(serializer.data, status.HTTP_200_OK)
+    def get_queryset(self):
+        order_id = self.kwargs.get('pk')
+        get_object_or_404(OrderModel, pk=order_id)
+        return CommentModel.objects.filter(order_id=order_id)
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
 
     def post(self, *args, **kwargs):
         order = get_object_or_404(OrderModel, pk=kwargs['pk'])

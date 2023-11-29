@@ -17,4 +17,4 @@ class UserModel(AbstractBaseUser, PermissionsMixin, BaseModel):
 
     class Meta:
         db_table = 'auth_user'
-        ordering = ('id',)
+        ordering = ('-id',)

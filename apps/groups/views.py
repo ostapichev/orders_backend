@@ -8,7 +8,6 @@ from rest_framework.response import Response
 
 from ..orders.models import OrderModel
 from ..orders.serializers import OrderSerializer
-from .filters import GroupFilter
 from .models import GroupModel
 from .serializers import GroupSerializer
 
@@ -23,7 +22,6 @@ class GroupsListCreateView(GenericAPIView, CreateModelMixin, ListModelMixin):
     serializer_class = GroupSerializer
     queryset = GroupModel.objects.all()
     permission_classes = (IsAdminUser,)
-    filterset_class = GroupFilter
     pagination_class = None
 
     def get(self, request,  *args, **kwargs):

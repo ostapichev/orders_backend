@@ -9,7 +9,6 @@ from drf_yasg.utils import no_body, swagger_auto_schema
 
 from core.permission.is_superuser import IsSuperUser
 
-from apps.admin.filters import UserFilter
 from apps.admin.models import UserModel as User
 from apps.admin.serializers import StatisticOrdersSerializer, StatisticUserSerializer, UserSerializer
 from apps.orders.choices import StatusChoices
@@ -28,7 +27,6 @@ class UserListCreateView(ListCreateAPIView):
     serializer_class = UserSerializer
     queryset = UserModel.objects.all_with_profiles()
     permission_classes = (IsSuperUser,)
-    filterset_class = UserFilter
     
     def get_permissions(self):
         return super().get_permissions()

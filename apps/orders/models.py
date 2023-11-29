@@ -57,3 +57,4 @@ class CommentModel(BaseModel):
 
     class Meta:
         db_table = 'comments'
+        ordering = ('-id',)

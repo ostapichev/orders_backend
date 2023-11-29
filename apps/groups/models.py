@@ -15,4 +15,4 @@ class GroupModel(BaseModel):
 
     class Meta:
         db_table = 'groups'
-        ordering = ('id',)
+        ordering = ('-id',)
