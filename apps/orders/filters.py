@@ -13,7 +13,8 @@ class OrderFilter(filters.FilterSet):
     course_format = filters.ChoiceFilter('course_format', choices=CourseFormatChoices.choices)
     course_type = filters.ChoiceFilter('course_type', choices=CourseTypeChoices.choices)
     status = filters.ChoiceFilter('status', choices=StatusChoices.choices)
-    group = filters.CharFilter('group__name', 'icontains')
+    group = filters.CharFilter('group__id', 'icontains')
+    created_at = filters.DateFromToRangeFilter()
     manager = filters.CharFilter('manager__name', 'icontains')
     order_by = filters.OrderingFilter(
         fields=(
