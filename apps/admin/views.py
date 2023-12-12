@@ -108,29 +108,24 @@ class StatisticOrdersView(GenericAPIView):
 
 class StatisticUsersView(GenericAPIView):
     """
-    Get statistics for multiple users
+        Get statistic users
     """
     serializer_class = StatisticUserSerializer
     permission_classes = (IsSuperUser,)
+    queryset = UserModel.objects.all()
 
-    def get(self, request, *args, **kwargs):
-        user_ids = str(kwargs['pk'])
-        if not user_ids:
-            return Response({'detail': 'Please provide at least one user_id'}, status=status.HTTP_400_BAD_REQUEST)
-
-        statistics = []
-        for user_id in user_ids:
-            user = get_object_or_404(UserModel, pk=user_id)
-            count_orders = OrderModel.objects.filter(manager=user_id).count()
-            in_work = OrderModel.objects.filter(manager=user_id, status='in_work').count()
-            agree = OrderModel.objects.filter(manager=user_id, status='agree').count()
-            user_statistics = {
-                'user_id': user_id,
-                'count_orders': count_orders,
-                StatusChoices.in_work: in_work,
-                StatusChoices.agree: agree
-            }
-            statistics.append(user_statistics)
-
-        serializer = StatisticUserSerializer(statistics, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    @staticmethod
+    def get(*args, **kwargs):
+        user_id = kwargs['pk']
+        get_object_or_404(UserModel, pk=user_id)
+        count_orders = OrderModel.objects.filter(manager=user_id).count()
+        in_work = OrderModel.objects.filter(manager=kwargs['pk'], status='in_work').count()
+        agree = OrderModel.objects.filter(manager=kwargs['pk'], status='agree').count()
+        statistic_user = {
+            'id': user_id,
+            'count_orders': count_orders,
+            StatusChoices.in_work: in_work,
+            StatusChoices.agree: agree
+        }
+        serializer = StatisticUserSerializer(statistic_user)
+        return Response(serializer.data, status.HTTP_200_OK)
