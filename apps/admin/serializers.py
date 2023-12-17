@@ -60,5 +60,3 @@ class StatisticUserSerializer(serializers.Serializer):
 
     class Meta:
         fields = ('id', 'count_orders', 'in_work', 'agree')
-
-

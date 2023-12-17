@@ -47,7 +47,7 @@ class OrderModel(BaseModel):
 
     class Meta:
         db_table = 'orders'
-        ordering = ('id',)
+        ordering = ('-id',)
 
 
 class CommentModel(BaseModel):
