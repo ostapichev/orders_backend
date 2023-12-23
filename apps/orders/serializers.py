@@ -30,7 +30,7 @@ class OrderSerializer(serializers.ModelSerializer):
             'course_type',
             'status',
             'sum',
-            'already_paid',
+            'alreadyPaid',
             'created_at',
             'group',
             'manager',

@@ -89,6 +89,9 @@ class CommentListCreateView(GenericAPIView, ListModelMixin):
 
 
 class ExcelExportAPIView(GenericAPIView):
+    """
+        Get exel file from orders
+    """
     serializer_class = OrderSerializer
     queryset = OrderModel.objects.all()
     permission_classes = (IsAdminUser,)

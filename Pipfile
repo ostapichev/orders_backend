@@ -14,6 +14,10 @@ drf-yasg = "*"
 openpyxl = "*"
 pandas = "*"
 django-bootstrap = "*"
+celery = "*"
+redis = "*"
+django-celery-results = "*"
+django-celery-beat = "*"
 
 [dev-packages]
 isort = "*"

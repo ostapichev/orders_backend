@@ -45,6 +45,9 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'drf_yasg',
     'corsheaders',
+    'celery',
+    'django_celery_results',
+    'django_celery_beat',
 
     # my apps
     'core',

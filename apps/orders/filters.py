@@ -29,7 +29,7 @@ class OrderFilter(filters.FilterSet):
             'course_type',
             'status',
             'sum',
-            'already_paid',
+            'alreadyPaid',
             'created_at',
             'updated_at',
             'group',

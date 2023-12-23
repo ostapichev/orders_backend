@@ -5,10 +5,12 @@ from django.template.loader import get_template
 
 from core.dataclasses.user_dataclass import UserDataClass
 from core.services.jwt_service import ActivateToken, JWTService, RecoveryToken
+from configs.celery import app
 
 
 class EmailService:
     @staticmethod
+    @app.task
     def __send_email(to: str, template_name: str, context: dict, subject=''):
         template = get_template(template_name)
         content = template.render(context)
@@ -28,9 +30,9 @@ class EmailService:
     @classmethod
     def register_email(cls, user: UserDataClass):
         context = cls.__create_context(user, ActivateToken, 'activate')
-        cls.__send_email(user.email, 'register.html', context, 'Register')
+        cls.__send_email.delay(user.email, 'register.html', context, 'Register')
 
     @classmethod
     def recovery_email(cls, user: UserDataClass):
         context = cls.__create_context(user, RecoveryToken, 'recovery')
-        cls.__send_email(user.email, 'recovery_password.html', context, 'Recovery password')
+        cls.__send_email.delay(user.email, 'recovery_password.html', context, 'Recovery password')
