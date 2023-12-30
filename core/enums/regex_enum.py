@@ -7,7 +7,7 @@ class RegExEnum(Enum):
         'First letter uppercase min 2 max 20 ch'
     )
     PHONE = (
-        r'^\d{12}$',
+        r'^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$',
         'Phone number must be 12 digits'
     )
     GROUP = (

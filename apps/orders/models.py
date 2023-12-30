@@ -15,8 +15,8 @@ class OrderModel(BaseModel):
     surname = models.CharField(max_length=35, validators=[
         validators.RegexValidator(RegExEnum.BASE_NAME_PATTERN.pattern, RegExEnum.BASE_NAME_PATTERN.msg)
     ])
-    email = models.EmailField(max_length=254, unique=True)
-    phone = models.BigIntegerField(unique=True, validators=[
+    email = models.EmailField(max_length=35, unique=True)
+    phone = models.CharField(max_length=12, unique=True, validators=[
         validators.RegexValidator(RegExEnum.PHONE.pattern, RegExEnum.PHONE.msg)
     ])
     age = models.IntegerField(validators=[
