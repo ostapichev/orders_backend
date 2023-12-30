@@ -11,6 +11,7 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
 import pandas as pd
+from drf_yasg.utils import no_body, swagger_auto_schema
 
 from .choices import StatusChoices
 from .filters import OrderFilter
@@ -27,6 +28,7 @@ class OrdersListView(GenericAPIView, ListModelMixin):
     permission_classes = (IsAdminUser,)
     filterset_class = OrderFilter
 
+    @swagger_auto_schema(request_body=no_body)
     def get(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
 
@@ -43,11 +45,13 @@ class OrderRetrieveUpdateView(GenericAPIView):
     queryset = OrderModel.objects.all()
     permission_classes = (IsAdminUser,)
 
+    @swagger_auto_schema(request_body=no_body)
     def get(self, *args, **kwargs):
         order = get_object_or_404(OrderModel, pk=kwargs['pk'])
         serializer = OrderSerializer(order)
         return Response(serializer.data, status.HTTP_200_OK)
 
+    @swagger_auto_schema(request_body=no_body)
     def patch(self, *args, **kwargs):
         order = get_object_or_404(OrderModel, pk=kwargs['pk'])
         if self.request.user.id != order.manager_id:
@@ -58,7 +62,7 @@ class OrderRetrieveUpdateView(GenericAPIView):
         return Response(serializer.data, status.HTTP_200_OK)
 
 
-class CommentListCreateView(GenericAPIView, ListModelMixin):
+class CommentListCreateView(GenericAPIView):
     """
         get:
             Get all comments
@@ -66,16 +70,18 @@ class CommentListCreateView(GenericAPIView, ListModelMixin):
             Create comment under order by id
     """
     serializer_class = CommentSerializer
+    queryset = OrderModel.objects.all()
     permission_classes = (IsAdminUser,)
 
-    def get_queryset(self):
-        order_id = self.kwargs.get('pk')
+    @swagger_auto_schema(request_body=no_body)
+    def get(self, *args, **kwargs):
+        order_id = kwargs['pk']
         get_object_or_404(OrderModel, pk=order_id)
-        return CommentModel.objects.filter(order_id=order_id)
+        comments = CommentModel.objects.filter(order_id)
+        serializer = CommentSerializer(comments, many=True)
+        return Response(serializer.data, status.HTTP_200_OK)
 
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
-
+    @swagger_auto_schema(request_body=no_body)
     def post(self, *args, **kwargs):
         order = get_object_or_404(OrderModel, pk=kwargs['pk'])
         if order.manager_id is not None and self.request.user.id != order.manager_id:
@@ -130,8 +136,7 @@ class ExcelExportAPIView(GenericAPIView):
             excel_buffer_content = excel_buffer.getvalue()
             response = HttpResponse(
                 excel_buffer_content,
-                content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-            )
+                content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
             response['Content-Disposition'] = f'attachment; filename={filename}'
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

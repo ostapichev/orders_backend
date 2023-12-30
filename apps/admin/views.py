@@ -79,11 +79,10 @@ class UserUnBanView(GenericAPIView):
 
 class StatisticOrdersView(GenericAPIView):
     """
-        Statistic orders
+        Get statistic orders
     """
     serializer_class = StatisticOrdersSerializer
     permission_classes = (IsAdminUser,)
-    super_user_count = 1
 
     def get(self, request, *args, **kwargs):
         item_count = OrderModel.objects.count()
@@ -95,7 +94,7 @@ class StatisticOrdersView(GenericAPIView):
         dubbing = OrderModel.objects.filter(status=StatusChoices.dubbing).count()
         statistic_orders = {
             'item_count': item_count,
-            'user_count': user_count - self.super_user_count,
+            'user_count': user_count,
             'in_work': in_work,
             'new_order': new_order,
             'agree': agree,
