@@ -108,7 +108,6 @@ class ExcelExportAPIView(GenericAPIView):
         serializer = OrderSerializer(orders, many=True)
         current_datetime = datetime.now()
         formatted_datetime = current_datetime.strftime("%Y-%m-%d")
-        print(formatted_datetime)
         filename = f"{formatted_datetime}.xlsx"
         data = []
         for item in serializer.data:
