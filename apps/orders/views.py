@@ -1,4 +1,5 @@
 from collections import OrderedDict
+from datetime import datetime
 from io import BytesIO
 
 from django.http import Http404, HttpResponse
@@ -89,6 +90,9 @@ class CommentListCreateView(GenericAPIView, ListModelMixin):
 
 
 class ExcelExportAPIView(GenericAPIView):
+    """
+        Get exel file for orders
+    """
     serializer_class = OrderSerializer
     filterset_class = OrderFilter
     queryset = OrderModel.objects.all()
@@ -102,6 +106,10 @@ class ExcelExportAPIView(GenericAPIView):
     def get(self, *args, **kwargs):
         orders = self.filter_queryset(self.get_queryset())
         serializer = OrderSerializer(orders, many=True)
+        current_datetime = datetime.now()
+        formatted_datetime = current_datetime.strftime("%Y-%m-%d")
+        print(formatted_datetime)
+        filename = f"{formatted_datetime}.xlsx"
         data = []
         for item in serializer.data:
             processed_data = {}
@@ -125,7 +133,7 @@ class ExcelExportAPIView(GenericAPIView):
                 excel_buffer_content,
                 content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
             )
-            response['Content-Disposition'] = 'attachment; filename=orders_data.xlsx'
+            response['Content-Disposition'] = f'attachment; filename={filename}'
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         finally:
