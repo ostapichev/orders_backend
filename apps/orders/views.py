@@ -90,11 +90,17 @@ class CommentListCreateView(GenericAPIView, ListModelMixin):
 
 class ExcelExportAPIView(GenericAPIView):
     serializer_class = OrderSerializer
+    filterset_class = OrderFilter
     queryset = OrderModel.objects.all()
     permission_classes = (IsAdminUser,)
 
+    def get_queryset(self):
+        params = self.request.query_params
+        queryset = OrderFilter(params, queryset=self.queryset).qs
+        return queryset
+
     def get(self, *args, **kwargs):
-        orders = OrderModel.objects.all()
+        orders = self.filter_queryset(self.get_queryset())
         serializer = OrderSerializer(orders, many=True)
         data = []
         for item in serializer.data:
