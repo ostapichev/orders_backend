@@ -120,11 +120,15 @@ class StatisticUsersView(GenericAPIView):
         count_orders = OrderModel.objects.filter(manager=user_id).count()
         in_work = OrderModel.objects.filter(manager=kwargs['pk'], status='in_work').count()
         agree = OrderModel.objects.filter(manager=kwargs['pk'], status='agree').count()
+        disagree = OrderModel.objects.filter(manager=kwargs['pk'], status='agree').count()
+        dubbing = OrderModel.objects.filter(manager=kwargs['pk'], status='dubbing').count()
         statistic_user = {
             'id': user_id,
             'count_orders': count_orders,
             StatusChoices.in_work: in_work,
-            StatusChoices.agree: agree
+            StatusChoices.agree: agree,
+            StatusChoices.disagree: disagree,
+            StatusChoices.dubbing: dubbing
         }
         serializer = StatisticUserSerializer(statistic_user)
         return Response(serializer.data, status.HTTP_200_OK)

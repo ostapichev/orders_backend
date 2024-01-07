@@ -57,6 +57,8 @@ class StatisticUserSerializer(serializers.Serializer):
     count_orders = serializers.IntegerField()
     in_work = serializers.IntegerField()
     agree = serializers.IntegerField()
+    disagree = serializers.IntegerField()
+    dubbing = serializers.IntegerField()
 
     class Meta:
         fields = ('id', 'count_orders', 'in_work', 'agree')
