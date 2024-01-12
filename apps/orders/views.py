@@ -97,7 +97,7 @@ class CommentListCreateView(GenericAPIView):
 
 class ExcelExportAPIView(GenericAPIView):
     """
-        Get exel file for orders
+        Get exel file by orders
     """
     serializer_class = OrderSerializer
     filterset_class = OrderFilter

@@ -109,7 +109,7 @@ class StatisticOrdersView(GenericAPIView):
 
 class StatisticUsersView(GenericAPIView):
     """
-        Get statistic users
+        Get statistic user by id
     """
     serializer_class = StatisticUserSerializer
     permission_classes = (IsAdminUser,)
