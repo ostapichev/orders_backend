@@ -122,7 +122,7 @@ class StatisticUsersView(GenericAPIView):
         count_orders = OrderModel.objects.filter(manager=user_id).count()
         in_work = OrderModel.objects.filter(manager=kwargs['pk'], status='in_work').count()
         agree = OrderModel.objects.filter(manager=kwargs['pk'], status='agree').count()
-        disagree = OrderModel.objects.filter(manager=kwargs['pk'], status='agree').count()
+        disagree = OrderModel.objects.filter(manager=kwargs['pk'], status='disagree').count()
         dubbing = OrderModel.objects.filter(manager=kwargs['pk'], status='dubbing').count()
         statistic_user = {
             'id': user_id,

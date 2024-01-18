@@ -55,6 +55,6 @@ class GroupOrderListCreateView(GenericAPIView):
         serializer = OrderSerializer(data=self.request.data)
         serializer.is_valid(raise_exception=True)
         if not GroupModel.objects.filter(pk=pk).exists():
-            raise Http404()
+            raise Exception('This group undefined')
         serializer.save(group_id=pk)
         return Response(serializer.data, status.HTTP_201_CREATED)
