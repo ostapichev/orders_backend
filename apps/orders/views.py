@@ -128,7 +128,11 @@ class ExcelExportAPIView(GenericAPIView):
             data.append(processed_data)
         df = pd.DataFrame(data)
         excluded_columns = ['msg', 'utm', 'comments']
-        df = df.drop(columns=excluded_columns, axis=1)
+        for column in excluded_columns:
+            try:
+                df = df.drop(columns=column, axis=1)
+            except KeyError:
+                pass
         excel_buffer = BytesIO()
         try:
             df.to_excel(excel_buffer, index=False)
