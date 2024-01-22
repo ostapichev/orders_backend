@@ -86,7 +86,8 @@ class StatisticOrdersView(GenericAPIView):
     serializer_class = StatisticOrdersSerializer
     permission_classes = (IsSuperUser,)
 
-    def get(self, request, *args, **kwargs):
+    @staticmethod
+    def get(request, *args, **kwargs):
         item_count = OrderModel.objects.count()
         user_count = UserModel.objects.count()
         in_work = OrderModel.objects.filter(status=StatusChoices.in_work).count()

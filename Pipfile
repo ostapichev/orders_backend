@@ -12,6 +12,7 @@ djangorestframework-simplejwt = "*"
 django-cors-headers = "*"
 drf-yasg = "*"
 pandas = "*"
+orderpyxl = "*"
 
 [dev-packages]
 isort = "*"

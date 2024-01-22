@@ -42,7 +42,8 @@ class GroupOrderListCreateView(GenericAPIView):
     queryset = GroupModel.objects.all()
     permission_classes = (IsAdminUser,)
 
-    def get(self, *args, **kwargs):
+    @staticmethod
+    def get(*args, **kwargs):
         pk = kwargs['pk']
         if not GroupModel.objects.filter(pk=pk).exists():
             raise Http404

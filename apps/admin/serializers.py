@@ -45,7 +45,8 @@ class StatisticOrdersSerializer(serializers.Serializer):
     disagree = serializers.IntegerField()
     dubbing = serializers.IntegerField()
 
-    def get_user_count(self, obj):
+    @staticmethod
+    def get_user_count(obj):
         return obj['user_count']
 
     class Meta:

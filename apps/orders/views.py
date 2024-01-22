@@ -1,8 +1,4 @@
-from collections import OrderedDict
-from datetime import datetime
-from io import BytesIO
-
-from django.http import Http404, HttpResponse
+from django.http import Http404
 
 from rest_framework import status
 from rest_framework.generics import GenericAPIView, get_object_or_404
@@ -14,6 +10,7 @@ import pandas as pd
 from drf_yasg.utils import no_body, swagger_auto_schema
 
 from .choices import StatusChoices
+from .export_file_manager import book_creator, date_converter, name_creator
 from .filters import OrderFilter
 from .models import CommentModel, OrderModel
 from .serializers import CommentSerializer, OrderSerializer
@@ -97,7 +94,7 @@ class CommentListCreateView(GenericAPIView):
 
 class ExcelExportAPIView(GenericAPIView):
     """
-        Get exel file by orders
+        Get Excel file by orders
     """
     serializer_class = OrderSerializer
     filterset_class = OrderFilter
@@ -107,43 +104,16 @@ class ExcelExportAPIView(GenericAPIView):
     def get_queryset(self):
         params = self.request.query_params
         queryset = OrderFilter(params, queryset=self.queryset).qs
-        return queryset
+        return queryset.select_related('related_model')
 
+    @swagger_auto_schema(request_body=no_body)
     def get(self, *args, **kwargs):
         orders = self.filter_queryset(self.get_queryset())
-        serializer = OrderSerializer(orders, many=True)
-        current_datetime = datetime.now()
-        formatted_datetime = current_datetime.strftime("%Y-%m-%d")
-        filename = f"{formatted_datetime}.xlsx"
-        data = []
-        for item in serializer.data:
-            processed_data = {}
-            for key, value in item.items():
-                if isinstance(value, OrderedDict):
-                    selected_keys = ['name']
-                    selected_data = ', '.join([f'{value[key]}' for key in selected_keys])
-                    processed_data[key] = selected_data
-                else:
-                    processed_data[key] = value
-            data.append(processed_data)
+        data = list(orders.values())
+        date_converter(data)
         df = pd.DataFrame(data)
+        filename = name_creator()
         excluded_columns = ['msg', 'utm', 'comments']
-        for column in excluded_columns:
-            try:
-                df = df.drop(columns=column, axis=1)
-            except KeyError:
-                pass
-        excel_buffer = BytesIO()
-        try:
-            df.to_excel(excel_buffer, index=False)
-            excel_buffer.seek(0)
-            excel_buffer_content = excel_buffer.getvalue()
-            response = HttpResponse(
-                excel_buffer_content,
-                content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-            response['Content-Disposition'] = f'attachment; filename={filename}'
-        except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        finally:
-            excel_buffer.close()
+        data_table = df.drop(columns=excluded_columns, errors='ignore')
+        response = book_creator(data_table, filename)
         return response
