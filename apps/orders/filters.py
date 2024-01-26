@@ -18,21 +18,7 @@ class OrderFilter(filters.FilterSet):
     manager = filters.CharFilter('manager__name', 'icontains')
     order_by = filters.OrderingFilter(
         fields=(
-            'id',
-            'name',
-            'surname',
-            'email',
-            'phone',
-            'age',
-            'course',
-            'course_format',
-            'course_type',
-            'status',
-            'sum',
-            'already_paid',
-            'created_at',
-            'updated_at',
-            'group',
-            'manager',
+            'id', 'name', 'surname', 'email', 'phone', 'age', 'course', 'course_format', 'course_type',
+            'status', 'sum', 'already_paid', 'created_at', 'updated_at', 'group', 'manager'
         )
     )

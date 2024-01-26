@@ -51,8 +51,12 @@ class OrderRetrieveUpdateView(GenericAPIView):
     @swagger_auto_schema(request_body=no_body)
     def patch(self, *args, **kwargs):
         order = get_object_or_404(OrderModel, pk=kwargs['pk'])
+        print(order.manager_id)
         if self.request.user.id != order.manager_id:
-            raise Http404()
+            if order.manager_id:
+                raise Http404()
+        if order.status == 'new_order':
+            order.manager_id = None
         serializer = OrderSerializer(order, data=self.request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
