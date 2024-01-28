@@ -17,8 +17,8 @@ desired_column_order = [
 column_widths = {
     'id': 5,
     'name': 15,
-    'surname': 20,
-    'email': 50,
+    'surname': 15,
+    'email': 36,
     'phone': 20,
     'age': 5,
     'course': 10,

@@ -29,11 +29,12 @@ class ActivateUserRequestView(GenericAPIView):
 
     def post(self, *args, **kwargs):
         data = self.request.data
+        email = data.get('email')
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         user = get_object_or_404(UserModel, **serializer.data)
         EmailService.register_email(user)
-        return Response('Check email of the manager for the registration', status.HTTP_200_OK)
+        return Response(f'To activate the user, a message was sent to {email}.', status.HTTP_200_OK)
 
 
 @method_decorator(name='post', decorator=swagger_auto_schema(security=[]))
@@ -65,11 +66,12 @@ class RecoveryPasswordRequestView(GenericAPIView):
 
     def post(self, *args, **kwargs):
         data = self.request.data
+        email = data.get('email')
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         user = get_object_or_404(UserModel, **serializer.data)
         EmailService.recovery_email(user)
-        return Response('Check email of the manager for the recovery password', status.HTTP_200_OK)
+        return Response(f'To recovery password, a message has been sent to {email}.', status.HTTP_200_OK )
 
 
 @method_decorator(name='post', decorator=swagger_auto_schema(security=[]))
