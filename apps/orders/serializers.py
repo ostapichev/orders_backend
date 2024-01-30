@@ -19,22 +19,5 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderModel
         fields = (
-            'id',
-            'name',
-            'surname',
-            'email',
-            'phone',
-            'age',
-            'course',
-            'course_format',
-            'course_type',
-            'status',
-            'sum',
-            'already_paid',
-            'created_at',
-            'group',
-            'manager',
-            'msg',
-            'utm',
-            'comments',
-        )
+            'id', 'name', 'surname', 'email', 'phone', 'age', 'course', 'course_format', 'course_type', 'status',
+            'sum', 'already_paid', 'created_at', 'group', 'manager', 'msg', 'utm', 'comments')

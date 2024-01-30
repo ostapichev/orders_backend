@@ -8,7 +8,7 @@ from .managers import GroupManager
 
 
 class GroupModel(BaseModel):
-    name = models.CharField(max_length=35, validators=[
+    name = models.CharField(max_length=35, unique=True, validators=[
         validators.RegexValidator(RegExEnum.GROUP.pattern, RegExEnum.BASE_NAME_PATTERN.msg)
     ])
     objects = GroupManager()

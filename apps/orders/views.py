@@ -36,7 +36,6 @@ class OrderRetrieveUpdateView(GenericAPIView):
             Get order by id
         patch:
             Partial update order by id
-
     """
     serializer_class = OrderSerializer
     queryset = OrderModel.objects.all()
