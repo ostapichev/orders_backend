@@ -33,8 +33,11 @@ class ActivateUserRequestView(GenericAPIView):
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         user = get_object_or_404(UserModel, **serializer.data)
-        EmailService.register_email(user)
-        return Response(f'To activate the user, a message was sent to {email}.', status.HTTP_200_OK)
+        try:
+            EmailService.register_email(user)
+        except OSError:
+            return Response({'detail': 'Connection locked!'}, status.HTTP_423_LOCKED)
+        return Response(f'An email has been sent to {email} for user activation.', status.HTTP_200_OK)
 
 
 @method_decorator(name='post', decorator=swagger_auto_schema(security=[]))
@@ -70,8 +73,11 @@ class RecoveryPasswordRequestView(GenericAPIView):
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         user = get_object_or_404(UserModel, **serializer.data)
-        EmailService.recovery_email(user)
-        return Response(f'To recovery password, a message has been sent to {email}.', status.HTTP_200_OK )
+        try:
+            EmailService.recovery_email(user)
+        except OSError:
+            return Response({'detail': 'Connection locked!'}, status.HTTP_423_LOCKED)
+        return Response(f'An email has been sent to {email} for password recovery.', status.HTTP_200_OK)
 
 
 @method_decorator(name='post', decorator=swagger_auto_schema(security=[]))

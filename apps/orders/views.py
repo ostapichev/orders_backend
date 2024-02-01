@@ -1,5 +1,3 @@
-from django.http import Http404
-
 from rest_framework import status
 from rest_framework.generics import GenericAPIView, get_object_or_404
 from rest_framework.mixins import ListModelMixin
@@ -9,8 +7,9 @@ from rest_framework.response import Response
 import pandas as pd
 from drf_yasg.utils import no_body, swagger_auto_schema
 
+from core.services.export_file_service import ExportFileService
 from .choices import StatusChoices
-from .export_file_manager import book_creator, date_converter, name_creator
+
 from .filters import OrderFilter
 from .models import CommentModel, OrderModel
 from .serializers import CommentSerializer, OrderSerializer
@@ -54,7 +53,7 @@ class OrderRetrieveUpdateView(GenericAPIView):
             order.manager_id = None
         if self.request.user.id != order.manager_id:
             if order.manager_id:
-                raise Http404()
+                return Response({'detail': "You don't have permissions"}, status.HTTP_403_FORBIDDEN)
         serializer = OrderSerializer(order, data=self.request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -75,8 +74,8 @@ class CommentListCreateView(GenericAPIView):
     @swagger_auto_schema(request_body=no_body)
     def get(self, *args, **kwargs):
         order_id = kwargs['pk']
-        get_object_or_404(OrderModel, pk=order_id)
-        comments = CommentModel.objects.filter(order_id)
+        order = get_object_or_404(OrderModel, pk=order_id)
+        comments = CommentModel.objects.filter(order=order)
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data, status.HTTP_200_OK)
 
@@ -84,14 +83,14 @@ class CommentListCreateView(GenericAPIView):
     def post(self, *args, **kwargs):
         order = get_object_or_404(OrderModel, pk=kwargs['pk'])
         if order.manager_id is not None and self.request.user.id != order.manager_id:
-            raise Http404()
+            return Response({'detail': "You don't have permissions"}, status.HTTP_403_FORBIDDEN)
         serializer = CommentSerializer(data=self.request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save(order=order, profile_id=self.request.user.profile.id)
         order.manager_id = self.request.user.profile.id
         order.status = StatusChoices.in_work
         order.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.data, status.HTTP_201_CREATED)
 
 
 class ExcelExportAPIView(GenericAPIView):
@@ -112,10 +111,10 @@ class ExcelExportAPIView(GenericAPIView):
     def get(self, *args, **kwargs):
         orders = self.filter_queryset(self.get_queryset())
         data = list(orders.values())
-        date_converter(data)
+        ExportFileService.date_converter(data)
         df = pd.DataFrame(data)
-        filename = name_creator()
+        filename = ExportFileService.name_creator()
         excluded_columns = ['msg', 'utm', 'comments']
         data_table = df.drop(columns=excluded_columns, errors='ignore')
-        response = book_creator(data_table, filename)
+        response = ExportFileService.book_creator(data_table, filename)
         return response

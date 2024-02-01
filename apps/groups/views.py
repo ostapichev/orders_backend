@@ -1,7 +1,5 @@
-from django.http import Http404
-
 from rest_framework import status
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import GenericAPIView, get_object_or_404
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
@@ -46,16 +44,16 @@ class GroupOrderListCreateView(GenericAPIView):
     def get(*args, **kwargs):
         pk = kwargs['pk']
         if not GroupModel.objects.filter(pk=pk).exists():
-            raise Http404
+            return Response({'detail': 'This group is undefined'}, status.HTTP_400_BAD_REQUEST)
         orders = OrderModel.objects.filter(group_id=pk)
         serializer = OrderSerializer(orders, many=True)
         return Response(serializer.data, status.HTTP_200_OK)
 
     def post(self, *args, **kwargs):
         pk = kwargs['pk']
+        if not GroupModel.objects.filter(pk=pk).exists():
+            return Response({'detail': 'This group is undefined'}, status.HTTP_400_BAD_REQUEST)
         serializer = OrderSerializer(data=self.request.data)
         serializer.is_valid(raise_exception=True)
-        if not GroupModel.objects.filter(pk=pk).exists():
-            raise Exception('This group undefined')
         serializer.save(group_id=pk)
         return Response(serializer.data, status.HTTP_201_CREATED)

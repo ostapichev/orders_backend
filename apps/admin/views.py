@@ -84,6 +84,7 @@ class StatisticOrdersView(GenericAPIView):
         Get statistic orders
     """
     serializer_class = StatisticOrdersSerializer
+    queryset = OrderModel.objects.all()
     permission_classes = (IsSuperUser,)
 
     @staticmethod
@@ -113,8 +114,8 @@ class StatisticUsersView(GenericAPIView):
         Get statistic user by id
     """
     serializer_class = StatisticUserSerializer
-    permission_classes = (IsAdminUser,)
     queryset = UserModel.objects.all()
+    permission_classes = (IsAdminUser,)
 
     @staticmethod
     def get(*args, **kwargs):
