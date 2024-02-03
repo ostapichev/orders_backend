@@ -8,8 +8,8 @@ import pandas as pd
 from drf_yasg.utils import no_body, swagger_auto_schema
 
 from core.services.export_file_service import ExportFileService
-from .choices import StatusChoices
 
+from .choices import StatusChoices
 from .filters import OrderFilter
 from .models import CommentModel, OrderModel
 from .serializers import CommentSerializer, OrderSerializer

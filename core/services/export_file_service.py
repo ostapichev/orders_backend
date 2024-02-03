@@ -67,4 +67,4 @@ class ExportFileService:
             response['Content-Disposition'] = f'attachment; filename={filename}'
             return response
         except Exception as e:
-            return Response({'error exel book creator': str(e)}, status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'error exel book creator': str(e)}, status.HTTP_503_SERVICE_UNAVAILABLE)
