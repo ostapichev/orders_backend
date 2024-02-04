@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 
 from rest_framework import status
-from rest_framework.generics import GenericAPIView, ListCreateAPIView, get_object_or_404
+from rest_framework.generics import GenericAPIView, ListCreateAPIView
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
@@ -117,17 +117,15 @@ class StatisticUsersView(GenericAPIView):
     queryset = UserModel.objects.all()
     permission_classes = (IsAdminUser,)
 
-    @staticmethod
-    def get(*args, **kwargs):
-        user_id = kwargs['pk']
-        get_object_or_404(UserModel, pk=user_id)
-        count_orders = OrderModel.objects.filter(manager=user_id).count()
-        in_work = OrderModel.objects.filter(manager=kwargs['pk'], status='in_work').count()
-        agree = OrderModel.objects.filter(manager=kwargs['pk'], status='agree').count()
-        disagree = OrderModel.objects.filter(manager=kwargs['pk'], status='disagree').count()
-        dubbing = OrderModel.objects.filter(manager=kwargs['pk'], status='dubbing').count()
+    def get(self, *args, **kwargs):
+        user = self.get_object()
+        count_orders = OrderModel.objects.filter(manager=user.id).count()
+        in_work = OrderModel.objects.filter(manager=user.id, status='in_work').count()
+        agree = OrderModel.objects.filter(manager=user.id, status='agree').count()
+        disagree = OrderModel.objects.filter(manager=user.id, status='disagree').count()
+        dubbing = OrderModel.objects.filter(manager=user.id, status='dubbing').count()
         statistic_user = {
-            'id': user_id,
+            'id': user.id,
             'count_orders': count_orders,
             StatusChoices.in_work: in_work,
             StatusChoices.agree: agree,

@@ -62,8 +62,7 @@ class ExportFileService:
             excel_buffer_content = excel_buffer.getvalue()
             response = HttpResponse(
                 excel_buffer_content,
-                content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-            )
+                content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
             response['Content-Disposition'] = f'attachment; filename={filename}'
             return response
         except Exception as e:

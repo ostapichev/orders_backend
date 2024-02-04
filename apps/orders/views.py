@@ -1,5 +1,5 @@
 from rest_framework import status
-from rest_framework.generics import GenericAPIView, get_object_or_404
+from rest_framework.generics import GenericAPIView
 from rest_framework.mixins import ListModelMixin
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
@@ -42,18 +42,21 @@ class OrderRetrieveUpdateView(GenericAPIView):
 
     @swagger_auto_schema(request_body=no_body)
     def get(self, *args, **kwargs):
-        order = get_object_or_404(OrderModel, pk=kwargs['pk'])
+        order = self.get_object()
         serializer = OrderSerializer(order)
         return Response(serializer.data, status.HTTP_200_OK)
 
     @swagger_auto_schema(request_body=no_body)
     def patch(self, *args, **kwargs):
-        order = get_object_or_404(OrderModel, pk=kwargs['pk'])
-        if self.request.data['status'] == 'new_order':
-            order.manager_id = None
-        if self.request.user.id != order.manager_id:
-            if order.manager_id:
-                return Response({'detail': "You don't have permissions"}, status.HTTP_403_FORBIDDEN)
+        order = self.get_object()
+        try:
+            if self.request.data['status'] == 'new_order':
+                order.manager_id = None
+            if self.request.user.id != order.manager_id:
+                if order.manager_id:
+                    return Response({'detail': "You don't have permissions"}, status.HTTP_403_FORBIDDEN)
+        except KeyError:
+            return Response({'detail': 'Status is not valid'}, status.HTTP_400_BAD_REQUEST)
         serializer = OrderSerializer(order, data=self.request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -73,15 +76,14 @@ class CommentListCreateView(GenericAPIView):
 
     @swagger_auto_schema(request_body=no_body)
     def get(self, *args, **kwargs):
-        order_id = kwargs['pk']
-        order = get_object_or_404(OrderModel, pk=order_id)
+        order = self.get_object()
         comments = CommentModel.objects.filter(order=order)
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data, status.HTTP_200_OK)
 
     @swagger_auto_schema(request_body=no_body)
     def post(self, *args, **kwargs):
-        order = get_object_or_404(OrderModel, pk=kwargs['pk'])
+        order = self.get_object()
         if order.manager_id is not None and self.request.user.id != order.manager_id:
             return Response({'detail': "You don't have permissions"}, status.HTTP_403_FORBIDDEN)
         serializer = CommentSerializer(data=self.request.data)
