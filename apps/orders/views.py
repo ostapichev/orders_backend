@@ -42,7 +42,7 @@ class OrderRetrieveUpdateView(GenericAPIView):
 
     @swagger_auto_schema(request_body=no_body)
     def get(self, *args, **kwargs):
-        order = get_object_or_404(OrderModel, pk=self.kwargs['order_id'])
+        order = self.get_object()
         serializer = OrderSerializer(order)
         return Response(serializer.data, status.HTTP_200_OK)
 
