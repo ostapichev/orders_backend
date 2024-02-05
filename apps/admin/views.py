@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 
 from rest_framework import status
-from rest_framework.generics import GenericAPIView, ListCreateAPIView
+from rest_framework.generics import GenericAPIView, ListCreateAPIView, get_object_or_404
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
@@ -47,7 +47,7 @@ class UserBanView(GenericAPIView):
 
     @swagger_auto_schema(request_body=no_body)
     def patch(self, *args, **kwargs):
-        user: User = self.get_object()
+        user: User = get_object_or_404(UserModel, pk=kwargs['pk'])
         if user.is_active:
             user.is_active = False
             user.save()
@@ -68,7 +68,7 @@ class UserUnBanView(GenericAPIView):
 
     @swagger_auto_schema(request_body=no_body)
     def patch(self, *args, **kwargs):
-        user: User = self.get_object()
+        user: User = get_object_or_404(UserModel, pk=kwargs['pk'])
         if not user.is_active:
             user.is_active = True
             user.save()

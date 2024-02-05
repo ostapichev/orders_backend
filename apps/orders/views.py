@@ -42,13 +42,13 @@ class OrderRetrieveUpdateView(GenericAPIView):
 
     @swagger_auto_schema(request_body=no_body)
     def get(self, *args, **kwargs):
-        order = self.get_object()
+        order = get_object_or_404(OrderModel, pk=kwargs['pk'])
         serializer = OrderSerializer(order)
         return Response(serializer.data, status.HTTP_200_OK)
 
     @swagger_auto_schema(request_body=no_body)
     def patch(self, *args, **kwargs):
-        order = self.get_object()
+        order = get_object_or_404(OrderModel, pk=kwargs['pk'])
         try:
             if self.request.data['status'] == 'new_order':
                 order.manager_id = None
