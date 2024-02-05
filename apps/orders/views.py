@@ -1,5 +1,5 @@
 from rest_framework import status
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import GenericAPIView, get_object_or_404
 from rest_framework.mixins import ListModelMixin
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
@@ -42,7 +42,7 @@ class OrderRetrieveUpdateView(GenericAPIView):
 
     @swagger_auto_schema(request_body=no_body)
     def get(self, *args, **kwargs):
-        order = self.get_object()
+        order = get_object_or_404(OrderModel, pk=self.kwargs['order_id'])
         serializer = OrderSerializer(order)
         return Response(serializer.data, status.HTTP_200_OK)
 
