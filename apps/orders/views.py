@@ -118,5 +118,4 @@ class ExcelExportAPIView(GenericAPIView):
         filename = ExportFileService.name_creator()
         excluded_columns = ['msg', 'utm', 'comments']
         data_table = df.drop(columns=excluded_columns, errors='ignore')
-        response = ExportFileService.book_creator(data_table, filename)
-        return response
+        return ExportFileService.book_creator(data_table, filename)
