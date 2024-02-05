@@ -63,7 +63,7 @@ class OrderRetrieveUpdateView(GenericAPIView):
         return Response(serializer.data, status.HTTP_200_OK)
 
 
-class CommentListCreateView(GenericAPIView):
+class CommentListCreateView(GenericAPIView, ListModelMixin):
     """
         get:
             Get all comments
@@ -71,19 +71,18 @@ class CommentListCreateView(GenericAPIView):
             Create comment under order by id
     """
     serializer_class = CommentSerializer
-    queryset = OrderModel.objects.all()
     permission_classes = (IsAdminUser,)
 
-    @swagger_auto_schema(request_body=no_body)
-    def get(self, *args, **kwargs):
-        order = self.get_object()
-        comments = CommentModel.objects.filter(order=order)
-        serializer = CommentSerializer(comments, many=True)
-        return Response(serializer.data, status.HTTP_200_OK)
+    def get_queryset(self):
+        order_id = self.kwargs.get('pk')
+        get_object_or_404(OrderModel, pk=order_id)
+        return CommentModel.objects.filter(order_id=order_id)
 
-    @swagger_auto_schema(request_body=no_body)
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
     def post(self, *args, **kwargs):
-        order = self.get_object()
+        order = get_object_or_404(OrderModel, pk=kwargs['pk'])
         if order.manager_id is not None and self.request.user.id != order.manager_id:
             return Response({'detail': "You don't have permissions"}, status.HTTP_403_FORBIDDEN)
         serializer = CommentSerializer(data=self.request.data)
@@ -92,7 +91,7 @@ class CommentListCreateView(GenericAPIView):
         order.manager_id = self.request.user.profile.id
         order.status = StatusChoices.in_work
         order.save()
-        return Response(serializer.data, status.HTTP_201_CREATED)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class ExcelExportAPIView(GenericAPIView):
