@@ -50,11 +50,11 @@ class OrderRetrieveUpdateView(GenericAPIView):
     def patch(self, *args, **kwargs):
         order = get_object_or_404(OrderModel, pk=kwargs['pk'])
         try:
-            if self.request.data['status'] == 'new_order':
-                order.manager_id = None
             if self.request.user.id != order.manager_id:
                 if order.manager_id:
                     return Response({'detail': "You don't have permissions"}, status.HTTP_403_FORBIDDEN)
+            if self.request.data['status'] == 'new_order':
+                order.manager_id = None
         except KeyError:
             return Response({'detail': 'Status is not valid'}, status.HTTP_400_BAD_REQUEST)
         serializer = OrderSerializer(order, data=self.request.data, partial=True)
