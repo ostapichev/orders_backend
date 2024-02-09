@@ -10,7 +10,9 @@ from rest_framework.response import Response
 from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.workbook import Workbook
 
+from apps.groups.models import GroupModel
 from configs.extra_conf import desired_column_order, column_widths
+from core.models import ProfileModel
 
 
 class ExportFileService:
@@ -38,11 +40,16 @@ class ExportFileService:
             cell.font = Font(color='FFFFFF')
 
     @staticmethod
-    def date_converter(data):
+    def data_converter(data):
+        group_id = set(item['group_id'] for item in data)
+        manager_id = set(item['manager_id'] for item in data)
+        groups = {group.id: group.name for group in GroupModel.objects.filter(pk__in=group_id)}
+        managers = {manager.id: manager.surname for manager in ProfileModel.objects.filter(pk__in=manager_id)}
         for item in data:
-            for key, value in item.items():
-                if isinstance(value, datetime):
-                    item[key] = timezone.localtime(value).replace(tzinfo=None)
+            if isinstance(item['created_at'], datetime):
+                item['created_at'] = timezone.localtime(item['created_at']).replace(tzinfo=None)
+            item['group_id'] = groups.get(item['group_id'], '')
+            item['manager_id'] = managers.get(item['manager_id'], '')
 
     @staticmethod
     def name_creator():

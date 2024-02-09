@@ -112,7 +112,7 @@ class ExcelExportAPIView(GenericAPIView):
     def get(self, *args, **kwargs):
         orders = self.filter_queryset(self.get_queryset())
         data = list(orders.values())
-        ExportFileService.date_converter(data)
+        ExportFileService.data_converter(data)
         df = pd.DataFrame(data)
         filename = ExportFileService.name_creator()
         excluded_columns = ['msg', 'utm', 'comments']
