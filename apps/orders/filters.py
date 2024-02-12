@@ -4,11 +4,11 @@ from .choices import CourseChoices, CourseFormatChoices, CourseTypeChoices, Stat
 
 
 class OrderFilter(filters.FilterSet):
-    name_contains = filters.CharFilter('name', 'icontains')
-    surname_contains = filters.CharFilter('surname', 'icontains')
-    email_contains = filters.CharFilter('email', 'icontains')
-    phone_contains = filters.NumberFilter('phone', 'icontains')
-    age_in = filters.BaseInFilter('age')
+    name = filters.CharFilter('name', 'icontains')
+    surname = filters.CharFilter('surname', 'icontains')
+    email = filters.CharFilter('email', 'icontains')
+    phone = filters.NumberFilter('phone', 'icontains')
+    age = filters.BaseInFilter('age')
     course = filters.ChoiceFilter('course', choices=CourseChoices.choices)
     course_format = filters.ChoiceFilter('course_format', choices=CourseFormatChoices.choices)
     course_type = filters.ChoiceFilter('course_type', choices=CourseTypeChoices.choices)
