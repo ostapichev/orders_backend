@@ -4,7 +4,6 @@ from rest_framework.mixins import ListModelMixin
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
-import pandas as pd
 from drf_yasg.utils import no_body, swagger_auto_schema
 
 from core.services.export_file_service import ExportFileService
@@ -111,9 +110,7 @@ class ExcelExportAPIView(GenericAPIView):
     @swagger_auto_schema(request_body=no_body)
     def get(self, *args, **kwargs):
         orders = self.filter_queryset(self.get_queryset())
-        data = list(orders.values())
-        ExportFileService.data_converter(data)
-        df = pd.DataFrame(data)
+        df = ExportFileService.table_creator(orders)
         filename = ExportFileService.name_creator()
         excluded_columns = ['msg', 'utm', 'comments']
         data_table = df.drop(columns=excluded_columns, errors='ignore')
