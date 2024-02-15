@@ -112,6 +112,6 @@ class ExcelExportAPIView(GenericAPIView):
         orders = self.filter_queryset(self.get_queryset())
         df = ExportFileService.table_creator(orders)
         filename = ExportFileService.name_creator()
-        excluded_columns = ['msg', 'utm', 'comments']
+        excluded_columns = ('msg', 'utm', 'comments')
         data_table = df.drop(columns=excluded_columns, errors='ignore')
         return ExportFileService.book_creator(data_table, filename)
