@@ -55,7 +55,7 @@ class ExportFileService:
         group_id = set(item['group_id'] for item in data)
         manager_id = set(item['manager_id'] for item in data)
         groups = {group.id: group.name for group in GroupModel.objects.filter(pk__in=group_id)}
-        managers = {manager.id: manager.surname for manager in ProfileModel.objects.filter(pk__in=manager_id)}
+        managers = {manager.id: manager.name for manager in ProfileModel.objects.filter(pk__in=manager_id)}
         for item in data:
             if isinstance(item['created_at'], datetime):
                 item['created_at'] = timezone.localtime(item['created_at']).replace(tzinfo=None)
