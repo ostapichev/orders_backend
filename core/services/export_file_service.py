@@ -64,8 +64,13 @@ class ExportFileService:
 
     @staticmethod
     def __create_header(sheet):
+        replace_column_name = {
+            'group_id': 'group',
+            'manager_id': 'manager'
+        }
         for column_index, column_name in enumerate(desired_column_order, start=1):
-            cell = sheet.cell(row=1, column=column_index, value=column_name)
+            column_name_table = replace_column_name.get(column_name, column_name)
+            cell = sheet.cell(row=1, column=column_index, value=column_name_table)
             cell.alignment = Alignment(horizontal='center', vertical='center')
             cell.fill = PatternFill(start_color='50C878', end_color='50C878', fill_type='solid')
             cell.font = Font(color='FFFFFF')
