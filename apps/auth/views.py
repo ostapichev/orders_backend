@@ -14,8 +14,9 @@ from core.services.jwt_service import ActivateToken, JWTService, RecoveryToken
 
 from apps.admin.models import UserModel as User
 from apps.admin.serializers import UserSerializer
+from core.services.token_activate_service import CreateTokenService
 
-from .serializers import EmailSerializer, PasswordSerializer
+from .serializers import EmailSerializer, PasswordSerializer, ActivateTokenSerializer
 
 UserModel: User = get_user_model()
 
@@ -57,7 +58,7 @@ class ActivateUserView(GenericAPIView):
         user.set_password(serializer.data['password'])
         user.save()
         serializer = UserSerializer(user)
-        return Response(serializer.data)
+        return Response(serializer.data, status.HTTP_200_OK)
 
 
 class RecoveryPasswordRequestView(GenericAPIView):
@@ -96,6 +97,21 @@ class RecoveryPasswordView(GenericAPIView):
         user.set_password(serializer.data['password'])
         user.save()
         return Response('Password changed', status.HTTP_200_OK)
+
+
+class ActivateUserLinkView(GenericAPIView):
+    """
+        Activation user by link
+    """
+    permission_classes = (IsSuperUser,)
+    serializer_class = ActivateTokenSerializer
+
+    def get(self, *args, **kwargs):
+        user = get_object_or_404(UserModel, pk=kwargs['pk'])
+        token = CreateTokenService.create_token(user)
+        serializer = self.get_serializer(data=token)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data, status.HTTP_200_OK)
 
 
 class MeView(RetrieveAPIView):

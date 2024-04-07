@@ -22,7 +22,7 @@ class EmailService:
         url = f'http://localhost:3000/{link}/{token}'
         return {
             'name': user.profile.name,
-            'url': url,
+            'url': url
         }
 
     @classmethod
