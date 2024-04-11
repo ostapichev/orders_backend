@@ -108,6 +108,9 @@ class ActivateUserLinkView(GenericAPIView):
 
     def get(self, *args, **kwargs):
         user = get_object_or_404(UserModel, pk=kwargs['pk'])
+        if not user.is_active:
+            user.is_active = True
+            user.save()
         token = CreateTokenService.create_token(user)
         serializer = self.get_serializer(data=token)
         serializer.is_valid(raise_exception=True)
