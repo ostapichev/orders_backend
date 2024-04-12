@@ -4,6 +4,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 
 from core.dataclasses.user_dataclass import UserDataClass
+from core.exception.email_exception import EmailException
 from core.services.jwt_service import ActivateToken, JWTService, RecoveryToken
 
 
@@ -12,9 +13,12 @@ class EmailService:
     def __send_email(to: str, template_name: str, context: dict, subject=''):
         template = get_template(template_name)
         content = template.render(context)
-        message = EmailMultiAlternatives(subject, from_email=os.environ.get('EMAIL_HOST_NAME'), to=[to])
-        message.attach_alternative(content, 'text/html')
-        message.send()
+        try:
+            message = EmailMultiAlternatives(subject, from_email=os.environ.get('EMAIL_HOST_NAME'), to=[to])
+            message.attach_alternative(content, 'text/html')
+            message.send()
+        except (Exception,):
+            raise EmailException
 
     @staticmethod
     def __create_context(user, token_class, link):

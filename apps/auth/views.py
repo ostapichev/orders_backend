@@ -34,10 +34,7 @@ class ActivateUserRequestView(GenericAPIView):
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         user = get_object_or_404(UserModel, **serializer.data)
-        try:
-            EmailService.register_email(user)
-        except OSError:
-            return Response({'detail': 'Connection locked!'}, status.HTTP_423_LOCKED)
+        EmailService.register_email(user)
         return Response(f'An email has been sent to {email} for user activation.', status.HTTP_200_OK)
 
 
@@ -74,10 +71,7 @@ class RecoveryPasswordRequestView(GenericAPIView):
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         user = get_object_or_404(UserModel, **serializer.data)
-        try:
-            EmailService.recovery_email(user)
-        except OSError:
-            return Response({'detail': 'Connection locked!'}, status.HTTP_423_LOCKED)
+        EmailService.recovery_email(user)
         return Response(f'An email has been sent to {email} for password recovery.', status.HTTP_200_OK)
 
 
@@ -119,7 +113,7 @@ class ActivateUserLinkView(GenericAPIView):
 
 class MeView(RetrieveAPIView):
     """
-        Get me data
+        Get my data
     """
     serializer_class = UserSerializer
 

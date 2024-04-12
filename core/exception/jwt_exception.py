@@ -1,3 +1,2 @@
 class JwtException(Exception):
     pass
-
