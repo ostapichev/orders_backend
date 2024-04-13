@@ -16,6 +16,10 @@ class ErrorEnum(Enum):
         {'detail': 'Export file failed!'},
         status.HTTP_503_SERVICE_UNAVAILABLE
     )
+    TOKEN = (
+        {'detail': 'Create token failed!'},
+        status.HTTP_503_SERVICE_UNAVAILABLE
+    )
 
     def __init__(self, msg, code=status.HTTP_400_BAD_REQUEST):
         self.msg = msg

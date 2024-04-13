@@ -5,13 +5,15 @@ from core.enums.error_enum import ErrorEnum
 from core.exception.email_exception import EmailException
 from core.exception.export_file_exception import ExportFileException
 from core.exception.jwt_exception import JwtException
+from core.exception.token_exception import CreateTokenException
 
 
 def error_handler(exc: Exception, context: dict) -> Response:
     handlers = {
         'JwtException': _jwt_validation_error,
         'EmailException': _email_validation_error,
-        'ExportFileException': _export_file_error
+        'ExportFileException': _export_file_error,
+        'TokenException': _token_create_error
     }
     response = exception_handler(exc, context)
     exc_class = exc.__class__.__name__
@@ -30,3 +32,7 @@ def _email_validation_error(exc: EmailException, context: dict) -> Response:
 
 def _export_file_error(exc: ExportFileException, context: dict) -> Response:
     return Response(ErrorEnum.EXPORT.msg, ErrorEnum.EXPORT.code)
+
+
+def _token_create_error(exc: CreateTokenException, context: dict) -> Response:
+    return Response(ErrorEnum.TOKEN.msg, ErrorEnum.TOKEN.code)

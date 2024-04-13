@@ -105,8 +105,8 @@ class ActivateUserLinkView(GenericAPIView):
         if not user.is_active:
             user.is_active = True
             user.save()
-        token = CreateTokenService.create_token(user)
-        serializer = self.get_serializer(data=token)
+        data = CreateTokenService.create_token(user)
+        serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data, status.HTTP_200_OK)
 

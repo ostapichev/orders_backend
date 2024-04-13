@@ -13,6 +13,7 @@ class EmailSerializer(serializers.Serializer):
 
 class ActivateTokenSerializer(serializers.Serializer):
     token = serializers.CharField()
+    msg = serializers.CharField()
 
 
 class PasswordSerializer(serializers.ModelSerializer):
