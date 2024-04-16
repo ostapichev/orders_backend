@@ -9,7 +9,7 @@ class CreateTokenService:
             token = str(JWTService.create_token(user, ActivateToken))
             msg = (
                 f'Link for activate user {user.profile.surname} created!. '
-                f'Push the button "copy to clipboard", user id: {user.id}.')
+                f'Push on the button "copy to clipboard", user id: {user.id}.')
         except (Exception,):
             raise CreateTokenException
         data = {

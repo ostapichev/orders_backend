@@ -15,7 +15,7 @@ class OrderFilter(filters.FilterSet):
     status = filters.ChoiceFilter('status', choices=StatusChoices.choices)
     group = filters.BaseInFilter('group__id')
     created_at = filters.DateFromToRangeFilter()
-    manager = filters.CharFilter('manager__name', 'icontains')
+    manager = filters.BaseInFilter('manager__id')
     order_by = filters.OrderingFilter(
         fields=(
             'id', 'name', 'surname', 'email', 'phone', 'age', 'course', 'course_format', 'course_type',
