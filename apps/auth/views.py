@@ -54,8 +54,8 @@ class ActivateUserView(GenericAPIView):
         user.is_active = True
         user.set_password(serializer.data['password'])
         user.save()
-        serializer = UserSerializer(user)
-        return Response(serializer.data, status.HTTP_200_OK)
+        serializer_user = UserSerializer(user)
+        return Response(serializer_user.data, status.HTTP_200_OK)
 
 
 class RecoveryPasswordRequestView(GenericAPIView):
