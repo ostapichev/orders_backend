@@ -1,5 +1,5 @@
 desired_column_order = [
-    'id', 'name', 'surname', 'email', 'phone', 'age', 'course', 'course_format', 'course_type', 'already_paid',
+    'id', 'name', 'surname', 'email', 'phone', 'age', 'course', 'course_format', 'course_type', 'alreadyPaid',
     'sum', 'created_at', 'status', 'group_id', 'manager_id']
 
 column_widths = {
@@ -12,7 +12,7 @@ column_widths = {
     'course': 10,
     'course_format': 15,
     'course_type': 15,
-    'already_paid': 15,
+    'alreadyPaid': 15,
     'sum': 10,
     'created_at': 20,
     'status': 12,

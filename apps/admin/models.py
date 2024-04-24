@@ -1,9 +1,10 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 
-from core.models import BaseModel, ProfileModel
+from apps.orders.models import OrderModel
 
 from apps.admin.managers import UserManager
+from core.models import BaseModel, ProfileModel
 
 
 class UserModel(AbstractBaseUser, PermissionsMixin, BaseModel):
