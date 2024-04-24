@@ -14,8 +14,9 @@ from core.services.jwt_service import ActivateToken, JWTService, RecoveryToken
 
 from apps.admin.models import UserModel as User
 from apps.admin.serializers import UserSerializer
+from core.services.token_activate_service import CreateTokenService
 
-from .serializers import EmailSerializer, PasswordSerializer
+from .serializers import EmailSerializer, PasswordSerializer, ActivateTokenSerializer
 
 UserModel: User = get_user_model()
 
@@ -33,10 +34,7 @@ class ActivateUserRequestView(GenericAPIView):
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         user = get_object_or_404(UserModel, **serializer.data)
-        try:
-            EmailService.register_email(user)
-        except OSError:
-            return Response({'detail': 'Connection locked!'}, status.HTTP_423_LOCKED)
+        EmailService.register_email(user)
         return Response(f'An email has been sent to {email} for user activation.', status.HTTP_200_OK)
 
 
@@ -56,8 +54,8 @@ class ActivateUserView(GenericAPIView):
         user.is_active = True
         user.set_password(serializer.data['password'])
         user.save()
-        serializer = UserSerializer(user)
-        return Response(serializer.data)
+        serializer_user = UserSerializer(user)
+        return Response(serializer_user.data, status.HTTP_200_OK)
 
 
 class RecoveryPasswordRequestView(GenericAPIView):
@@ -73,10 +71,7 @@ class RecoveryPasswordRequestView(GenericAPIView):
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         user = get_object_or_404(UserModel, **serializer.data)
-        try:
-            EmailService.recovery_email(user)
-        except OSError:
-            return Response({'detail': 'Connection locked!'}, status.HTTP_423_LOCKED)
+        EmailService.recovery_email(user)
         return Response(f'An email has been sent to {email} for password recovery.', status.HTTP_200_OK)
 
 
@@ -98,9 +93,27 @@ class RecoveryPasswordView(GenericAPIView):
         return Response('Password changed', status.HTTP_200_OK)
 
 
+class ActivateUserLinkView(GenericAPIView):
+    """
+        Activation user by link
+    """
+    permission_classes = (IsSuperUser,)
+    serializer_class = ActivateTokenSerializer
+
+    def get(self, *args, **kwargs):
+        user = get_object_or_404(UserModel, pk=kwargs['pk'])
+        if not user.is_active:
+            user.is_active = True
+            user.save()
+        data = CreateTokenService.create_token(user)
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data, status.HTTP_200_OK)
+
+
 class MeView(RetrieveAPIView):
     """
-        Get me data
+        Get my data
     """
     serializer_class = UserSerializer
 

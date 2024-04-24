@@ -1,0 +1,2 @@
+class OrderPermissionException(Exception):
+    pass

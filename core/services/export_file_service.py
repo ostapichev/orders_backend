@@ -4,14 +4,12 @@ from io import BytesIO
 from django.http import HttpResponse
 from django.utils import timezone
 
-from rest_framework import status
-from rest_framework.response import Response
-
 import pandas as pd
 from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.workbook import Workbook
 
 from configs.extra_conf import column_widths, desired_column_order
+from core.exception.export_file_exception import ExportFileException
 
 from core.models import ProfileModel
 
@@ -46,8 +44,8 @@ class ExportFileService:
                 content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
             response['Content-Disposition'] = f'attachment; filename={filename}'
             return response
-        except Exception as e:
-            return Response({'error exel book creator': str(e)}, status.HTTP_503_SERVICE_UNAVAILABLE)
+        except (Exception,):
+            raise ExportFileException
 
     @staticmethod
     def __data_converter(data):
@@ -85,6 +83,6 @@ class ExportFileService:
             for column_index, column_name in enumerate(desired_column_order, start=1):
                 value = getattr(row, column_name)
                 cell = sheet.cell(row=row_index, column=column_index, value=value)
-                cell.alignment = Alignment(horizontal='center', vertical='center')
                 width = column_widths.get(column_name, 12)
+                cell.alignment = Alignment(horizontal='center', vertical='center')
                 sheet.column_dimensions[sheet.cell(row=1, column=column_index).column_letter].width = width

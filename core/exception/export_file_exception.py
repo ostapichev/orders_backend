@@ -1,0 +1,2 @@
+class ExportFileException(Exception):
+    pass

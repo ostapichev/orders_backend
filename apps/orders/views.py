@@ -6,7 +6,9 @@ from rest_framework.response import Response
 
 from drf_yasg.utils import no_body, swagger_auto_schema
 
+from core.exception.order_permission_exception import OrderPermissionException
 from core.services.export_file_service import ExportFileService
+from core.services.order_service import OrderService
 
 from .choices import StatusChoices
 from .filters import OrderFilter
@@ -48,14 +50,7 @@ class OrderRetrieveUpdateView(GenericAPIView):
     @swagger_auto_schema(request_body=no_body)
     def patch(self, *args, **kwargs):
         order = get_object_or_404(OrderModel, pk=kwargs['pk'])
-        try:
-            if self.request.user.id != order.manager_id:
-                if order.manager_id:
-                    return Response({'detail': "You don't have permissions"}, status.HTTP_403_FORBIDDEN)
-            if self.request.data['status'] == 'new_order':
-                order.manager_id = None
-        except KeyError:
-            return Response({'detail': 'Status is not valid'}, status.HTTP_400_BAD_REQUEST)
+        OrderService.patch_method(self.request, order)
         serializer = OrderSerializer(order, data=self.request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -82,8 +77,8 @@ class CommentListCreateView(GenericAPIView, ListModelMixin):
 
     def post(self, *args, **kwargs):
         order = get_object_or_404(OrderModel, pk=kwargs['pk'])
-        if order.manager_id is not None and self.request.user.id != order.manager_id:
-            return Response({'detail': "You don't have permissions"}, status.HTTP_403_FORBIDDEN)
+        if order.manager_id and self.request.user.id != order.manager_id:
+            raise OrderPermissionException
         serializer = CommentSerializer(data=self.request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save(order=order, profile_id=self.request.user.profile.id)

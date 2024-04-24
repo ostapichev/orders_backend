@@ -45,6 +45,9 @@ class UserBanView(GenericAPIView):
     queryset = UserModel.objects.all()
     permission_classes = (IsSuperUser,)
 
+    def get_queryset(self):
+        return super().get_queryset().exclude(pk=self.request.user.pk)
+
     @swagger_auto_schema(request_body=no_body)
     def patch(self, *args, **kwargs):
         user: User = get_object_or_404(UserModel, pk=kwargs['pk'])
@@ -53,9 +56,6 @@ class UserBanView(GenericAPIView):
             user.save()
         serializer = UserSerializer(user)
         return Response(serializer.data, status.HTTP_200_OK)
-
-    def get_queryset(self):
-        return super().get_queryset().exclude(pk=self.request.user.pk)
 
 
 class UserUnBanView(GenericAPIView):
@@ -66,6 +66,9 @@ class UserUnBanView(GenericAPIView):
     queryset = UserModel.objects.all()
     permission_classes = (IsSuperUser,)
 
+    def get_queryset(self):
+        return super().get_queryset().exclude(pk=self.request.user.pk)
+
     @swagger_auto_schema(request_body=no_body)
     def patch(self, *args, **kwargs):
         user: User = get_object_or_404(UserModel, pk=kwargs['pk'])
@@ -74,9 +77,6 @@ class UserUnBanView(GenericAPIView):
             user.save()
         serializer = UserSerializer(user)
         return Response(serializer.data, status.HTTP_200_OK)
-
-    def get_queryset(self):
-        return super().get_queryset().exclude(pk=self.request.user.pk)
 
 
 class StatisticOrdersView(GenericAPIView):

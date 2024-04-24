@@ -1,0 +1,2 @@
+class CreateTokenException(Exception):
+    pass
