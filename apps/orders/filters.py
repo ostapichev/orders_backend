@@ -19,5 +19,5 @@ class OrderFilter(filters.FilterSet):
     order_by = filters.OrderingFilter(
         fields=(
             'id', 'name', 'surname', 'email', 'phone', 'age', 'course', 'course_format', 'course_type',
-            'status', 'sum', 'already_paid', 'created_at', 'updated_at', 'group', 'manager')
+            'status', 'sum', 'alreadyPaid', 'created_at', 'updated_at', 'group', 'manager')
     )
