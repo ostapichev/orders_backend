@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "a3bdceab-58b2-4dc6-953b-8e0cdaa4466e",
 		"name": "orders_backend",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "27388764",
 		"_collection_link": "https://grey-eclipse-193021.postman.co/workspace/My-Workspace~f0199a8d-b36c-43b5-89aa-99d2b8587d12/collection/27388764-a3bdceab-58b2-4dc6-953b-8e0cdaa4466e?action=share&source=collection_link&creator=27388764"
 	},
@@ -15,9 +15,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{accessToken}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "GET",
 						"header": [],
@@ -32,27 +36,27 @@
 							],
 							"query": [
 								{
-									"key": "name_contains",
+									"key": "name",
 									"value": "max",
 									"disabled": true
 								},
 								{
-									"key": "surname_contains",
-									"value": "bor",
+									"key": "surname",
+									"value": "er",
 									"disabled": true
 								},
 								{
-									"key": "email_contains",
+									"key": "email",
 									"value": "st",
 									"disabled": true
 								},
 								{
-									"key": "phone_contains",
+									"key": "phone",
 									"value": "38098",
 									"disabled": true
 								},
 								{
-									"key": "age_in",
+									"key": "age",
 									"value": "48",
 									"disabled": true
 								},
@@ -72,18 +76,33 @@
 									"disabled": true
 								},
 								{
-									"key": "status_in",
-									"value": "in works",
+									"key": "status",
+									"value": "in_work",
+									"disabled": true
+								},
+								{
+									"key": "group",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "created_at_after",
+									"value": "2022-02-01",
+									"disabled": true
+								},
+								{
+									"key": "created_at_before",
+									"value": "2021-12-01",
 									"disabled": true
 								},
 								{
 									"key": "manager",
-									"value": "admin",
+									"value": "2",
 									"disabled": true
 								},
 								{
 									"key": "order_by",
-									"value": "-created_at",
+									"value": "id",
 									"disabled": true
 								}
 							]
@@ -96,9 +115,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{accessToken}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "GET",
 						"header": [],
@@ -115,7 +138,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "1"
+									"value": "500"
 								}
 							]
 						}
@@ -127,9 +150,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{accessToken}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "POST",
 						"header": [],
@@ -156,7 +183,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "688"
+									"value": "497"
 								}
 							]
 						}
@@ -168,9 +195,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{accessToken}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "GET",
 						"header": [],
@@ -188,7 +219,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "672"
+									"value": "500"
 								}
 							]
 						}
@@ -200,15 +231,19 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{accessToken}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "PATCH",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"status\": \"in_work\",\r\n    \"group\": 3\r\n}",
+							"raw": "{\r\n    \"status\": \"new_order\",\r\n    \"group\": 2\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -228,7 +263,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "688"
+									"value": "496"
 								}
 							]
 						}
@@ -240,13 +275,99 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{accessToken}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "GET",
 						"header": [],
-						"url": "{{host}}/api/orders/exel"
+						"url": {
+							"raw": "{{host}}/api/orders/exel",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"orders",
+								"exel"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "max",
+									"disabled": true
+								},
+								{
+									"key": "surname",
+									"value": "er",
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": "as",
+									"disabled": true
+								},
+								{
+									"key": "phone",
+									"value": "3808",
+									"disabled": true
+								},
+								{
+									"key": "age",
+									"value": "23",
+									"disabled": true
+								},
+								{
+									"key": "course",
+									"value": "PCX",
+									"disabled": true
+								},
+								{
+									"key": "course_format",
+									"value": "online",
+									"disabled": true
+								},
+								{
+									"key": "course_type",
+									"value": "vip",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "in_work",
+									"disabled": true
+								},
+								{
+									"key": "group",
+									"value": "3",
+									"disabled": true
+								},
+								{
+									"key": "created_at_after",
+									"value": "2022-02-01",
+									"disabled": true
+								},
+								{
+									"key": "created_at_before",
+									"value": "2021-12-01",
+									"disabled": true
+								},
+								{
+									"key": "manager",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "order_by",
+									"value": "id",
+									"disabled": true
+								}
+							]
+						}
 					},
 					"response": []
 				}
@@ -260,13 +381,26 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{accessToken}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "GET",
 						"header": [],
-						"url": "{{host}}/api/groups"
+						"url": {
+							"raw": "{{host}}/api/groups",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"groups"
+							]
+						}
 					},
 					"response": []
 				},
@@ -275,22 +409,35 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{accessToken}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"mar-2023\"\r\n}",
+							"raw": "{\r\n    \"name\": \"jun-2024\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "{{host}}/api/groups"
+						"url": {
+							"raw": "{{host}}/api/groups",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"groups"
+							]
+						}
 					},
 					"response": []
 				},
@@ -299,9 +446,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{accessToken}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "POST",
 						"header": [],
@@ -340,9 +491,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{accessToken}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "GET",
 						"header": [],
@@ -360,7 +515,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "24"
+									"value": "2"
 								}
 							]
 						}
@@ -383,7 +538,8 @@
 									"pm.environment.set('accessToken', res.access);\r",
 									"pm.environment.set('refreshToken', res.refresh);"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -412,7 +568,16 @@
 								}
 							]
 						},
-						"url": "{{host}}/api/auth"
+						"url": {
+							"raw": "{{host}}/api/auth",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"auth"
+							]
+						}
 					},
 					"response": []
 				},
@@ -434,9 +599,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{refreshToken}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{refreshToken}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "POST",
 						"header": [],
@@ -449,7 +618,17 @@
 								}
 							}
 						},
-						"url": "{{host}}/api/auth/refresh"
+						"url": {
+							"raw": "{{host}}/api/auth/refresh",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"refresh"
+							]
+						}
 					},
 					"response": []
 				},
@@ -461,9 +640,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{accessToken}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "GET",
 						"header": [],
@@ -476,7 +659,17 @@
 								}
 							}
 						},
-						"url": "{{host}}/api/auth/me"
+						"url": {
+							"raw": "{{host}}/api/auth/me",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"me"
+							]
+						}
 					},
 					"response": []
 				},
@@ -485,12 +678,27 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{accessToken}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "password",
+									"value": "P@$$word1",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
 						"url": {
 							"raw": "{{host}}/api/auth/activate/:token",
 							"host": [
@@ -505,7 +713,7 @@
 							"variable": [
 								{
 									"key": "token",
-									"value": ""
+									"value": "{{accessToken}}"
 								}
 							]
 						}
@@ -517,9 +725,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{accessToken}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "POST",
 						"header": [],
@@ -532,7 +744,17 @@
 								}
 							}
 						},
-						"url": "{{host}}/api/auth/recovery_password"
+						"url": {
+							"raw": "{{host}}/api/auth/recovery_password",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"recovery_password"
+							]
+						}
 					},
 					"response": []
 				},
@@ -579,9 +801,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{accessToken}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "POST",
 						"header": [],
@@ -594,7 +820,65 @@
 								}
 							}
 						},
-						"url": "{{host}}/api/auth/activate"
+						"url": {
+							"raw": "{{host}}/api/auth/activate",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"activate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "activate_link",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/auth/activate_link/:id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"activate_link",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
 					},
 					"response": []
 				}
@@ -608,22 +892,36 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{accessToken}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"ismail@gmail.com\",\r\n    \"profile\": {\r\n        \"name\": \"Ismail\",\r\n        \"surname\": \"Kuchukaya\"\r\n    }\r\n}",
+							"raw": "{\r\n    \"email\": \"isaak@gmail.com\",\r\n    \"profile\": {\r\n        \"name\": \"Isaak\",\r\n        \"surname\": \"Feldman\"\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "{{host}}/api/admin/users"
+						"url": {
+							"raw": "{{host}}/api/admin/users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"users"
+							]
+						}
 					},
 					"response": []
 				},
@@ -632,9 +930,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{accessToken}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "PATCH",
 						"header": [],
@@ -665,9 +967,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{accessToken}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "PATCH",
 						"header": [],
@@ -698,13 +1004,28 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{accessToken}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "GET",
 						"header": [],
-						"url": "{{host}}/api/admin/statistic/orders"
+						"url": {
+							"raw": "{{host}}/api/admin/statistic/orders",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"statistic",
+								"orders"
+							]
+						}
 					},
 					"response": []
 				},
@@ -713,9 +1034,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{accessToken}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "GET",
 						"header": [],
@@ -746,14 +1071,18 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": {
-								"token": "{{accessToken}}"
-							}
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/api/admin/users?order_by=-id",
+							"raw": "{{host}}/api/admin/users",
 							"host": [
 								"{{host}}"
 							],
@@ -764,8 +1093,19 @@
 							],
 							"query": [
 								{
-									"key": "order_by",
-									"value": "-id"
+									"key": "name",
+									"value": "a",
+									"disabled": true
+								},
+								{
+									"key": "surname",
+									"value": "os",
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": "er",
+									"disabled": true
 								}
 							]
 						}
